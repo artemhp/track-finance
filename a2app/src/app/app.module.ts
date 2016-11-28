@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
+import {PurchaseFormComponent} from './purchase/purchase-form.component.ts';
 import { AngularFireModule } from 'angularfire2';
 
 
@@ -19,7 +20,8 @@ export const firebaseConfig  = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PurchaseFormComponent
   ],
   imports: [
     BrowserModule,
