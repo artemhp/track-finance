@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
+declare var $:any;
+
 
 @Component({
   selector: 'app-root',
@@ -8,21 +9,15 @@ import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'a
 })
 export class AppComponent {
   title = 'app works!';
-  items: FirebaseListObservable<any[]>;
-  constructor (af: AngularFire) {
-    this.items = af.database.list('/items');
-
-  }
-  addItem(newName: string) {
-    this.items.push({ text: newName });
-  }
-  updateItem(key: string, newText: string) {
-    this.items.update(key, { text: newText });
-  }
-  deleteItem(key: string) {
-    this.items.remove(key);
-  }
-  deleteEverything() {
-    this.items.remove();
+  ngOnInit() {
+    $('.button-navigation').sideNav({
+      menuWidth: 300,
+      edge: 'left',
+      closeOnClick: true,
+      draggable: true
+    });
+    $(".drag-target").on("swipeleft", function () {
+      $("#sidenav-overlay").trigger("click");
+    });
   }
 }
