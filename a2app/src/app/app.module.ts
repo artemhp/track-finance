@@ -3,14 +3,22 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { MaterializeModule } from 'angular2-materialize';
+import { ChartsModule } from 'ng2-charts';
 
 import { AppComponent } from './app.component';
+import { HeaderComponent } from './layout/header/header.component';
+import { SidebarComponent } from './layout/sidebar/sidebar.component';
+import { LineChartComponent } from './chart/line-chart/line-chart.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HeaderComponent,
+    SidebarComponent,
+    LineChartComponent
   ],
   imports: [
+    ChartsModule,
     BrowserModule,
     FormsModule,
     HttpModule,
