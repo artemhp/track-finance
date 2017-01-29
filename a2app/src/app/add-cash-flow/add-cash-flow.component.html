@@ -8,7 +8,7 @@
       <div class="col s5">
         <div class="input-field">
           <select [(ngModel)]="selectedOptionCashFlow" name="selectedOption" materialize="material_select" [materializeSelectOptions]=selectOptionsCashFlow>
-            <option *ngFor="let option of selectOptionsCashFlow" [value]="option.value">{{option.name}}</option>
+            <option *ngFor="let option of selectOptionsCashFlow" [value]="option">{{option}}</option>
           </select>
           <label>Flow Type</label>
         </div>

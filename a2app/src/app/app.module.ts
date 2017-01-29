@@ -11,6 +11,17 @@ import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { LineChartComponent } from './chart/line-chart/line-chart.component';
 import { AddCashFlowComponent } from './add-cash-flow/add-cash-flow.component';
 
+import { AngularFireModule } from 'angularfire2';
+
+// Must export the config
+export const firebaseConfig = {
+  apiKey: "AIzaSyA94rul7WRhLdU_qREV16SfLfMJCFp9js0",
+  authDomain: "financemonitor-c4def.firebaseapp.com",
+  databaseURL: "https://financemonitor-c4def.firebaseio.com",
+  storageBucket: "financemonitor-c4def.appspot.com",
+  messagingSenderId: "976368137034"
+};
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,6 +31,7 @@ import { AddCashFlowComponent } from './add-cash-flow/add-cash-flow.component';
     AddCashFlowComponent
   ],
   imports: [
+    AngularFireModule.initializeApp(firebaseConfig),
     ChartsModule,
     BrowserModule,
     FormsModule,

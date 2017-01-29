@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFire, FirebaseListObservable } from 'angularfire2';
 declare var $:any;
 
 @Component({
@@ -14,20 +15,24 @@ export class AddCashFlowComponent implements OnInit {
   private selectedOptionCashFlow;
   private selectedOptionCurrency;
 
-  constructor() { }
+  items: FirebaseListObservable<any[]>;
+
+  constructor(af: AngularFire) {
+    this.items = af.database.list('/items');
+  }
 
   ngOnInit() {
     window.setTimeout(()=>{
       this.selectOptionsCashFlow = [
-        {value:'Income',name:"Income"},
-        {value:'Expence',name:"Expence"}
+        "Income",
+        "Expence"
       ]
     },100);
     window.setTimeout(()=>{
       this.selectOptionsCurrency = [
-        {value:'UAH',name:"UAH"},
-        {value:'USD',name:"USD"},
-        {value:'EUR',name:"EUR"}
+        'UAH',
+        'USD',
+        'EUR'
       ]
     },100);
 
