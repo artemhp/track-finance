@@ -9,13 +9,15 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { LineChartComponent } from './chart/line-chart/line-chart.component';
+import { AddCashFlowComponent } from './add-cash-flow/add-cash-flow.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     SidebarComponent,
-    LineChartComponent
+    LineChartComponent,
+    AddCashFlowComponent
   ],
   imports: [
     ChartsModule,
