@@ -1,4 +1,4 @@
-<form class="card" materialize (ngSubmit)="onSubmit()" #heroForm="ngForm">
+<form class="card" [formGroup]="cashFlowForm" materialize (ngSubmit)="onSubmit(cashFlowForm)">
   <div class="card-image">
     <img src="/assets/sidebar-bg.jpg">
     <span class="card-title">Any Updates?</span>
@@ -6,65 +6,52 @@
   <div class="card-content">
     <div class="row">
       <div class="col s5">
-        <div class="input-field">
-          <select id="optionsFlowType" name="optionsFlowType">
-            <option value="" disabled selected>Choose your option</option>
-            <option *ngFor="let option of optionsFlowType | async" [value]="option['$key']">
-              {{option['$key']}}
-            </option>
-          </select>
-          <label>Flow Type</label>
-        </div>
+        <label>Flow Type</label>
+        <select class="browser-default" formControlName="type">
+          <option *ngFor="let option of optionsFlowType | async" [value]="option['$key']">{{option['$key']}}</option>
+        </select>
       </div>
       <div class="col s7">
-        <label style="opacity: 0">Test</label>
-        <button class="btn waves-effect waves-light grey lighten-1 btn-block" data-target="modal1" type="submit" name="action">
+        <label style="opacity: 0">Category</label>
+        <button class="btn waves-effect waves-light grey lighten-1 btn-block" data-target="modal1" name="action">
           <small>Select Category</small>
         </button>
+        <input type="hidden" formControlName="category">
       </div>
     </div>
     <div class="row">
       <div class="input-field s6 col">
-        <input placeholder="Input cash" id="amount" type="number" name="amount" class="validate" [(ngModel)]="addCashFlow.amount" >
+        <input placeholder="Input cash" type="number" formControlName="amount">
         <label for="amount">Amount</label>
       </div>
-      <div class="input-field s6 col">
-        <select id="optionsCurrency" name="optionsCurrency">
-          <option value="" disabled selected>Choose your option</option>
-          <option *ngFor="let option of optionsCurrency | async" [value]="option['$key']">
-            {{option['$key']}}
-          </option>
-        </select>
+      <div class="s6 col">
         <label>Currency</label>
+        <select class="browser-default" formControlName="currency">
+          <option *ngFor="let option of optionsCurrency | async" [value]="option['$key']">{{option['$key']}}</option>
+        </select>
       </div>
     </div>
     <div class="row">
       <div class="input-field s12 col">
-        <input id="date" type="date" name="date" class="validate active" [(ngModel)]="addCashFlow.date" >
+        <input type="date" formControlName="date">
         <label for="date" class="active">Date</label>
       </div>
     </div>
-
-    <div class="">
-      <!-- Modal Structure -->
-      <div id="modal1" class="modal bottom-sheet">
-        <div class="modal-content">
-          <div class="collection">
-            <div class="collection-item modal-close"
-                 *ngFor="let option of optionsCategory | async"
-                 [ngClass]="{'active': option == addCashFlow['category']}"
-                 (click) = "addCashFlow['category'] = option">
-              <i class="material-icons left">done</i>
-              {{option['$key']}}
-            </div>
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal bottom-sheet">
+      <div class="modal-content">
+        <div class="collection">
+          <div class="collection-item modal-close" *ngFor="let option of optionsCategory | async" [ngClass]="{'active': option['$key'] == cashFlowForm.get('category').value}"
+            (click)="cashFlowForm.patchValue({'category': option['$key']})">
+            <i class="material-icons left">done</i> {{option['$key']}}
           </div>
         </div>
       </div>
     </div>
     <div class="">
-      <button class="btn waves-effect waves-light btn-block" type="submit" name="action">
+      <button [disabled]="!cashFlowForm.valid" class="btn waves-effect waves-light btn-block" type="submit" name="action">
         Confirm <i class="material-icons right">send</i>
-      </button>
+    </button>
     </div>
   </div>
 </form>
