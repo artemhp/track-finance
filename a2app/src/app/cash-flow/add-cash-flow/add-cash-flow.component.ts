@@ -12,7 +12,8 @@ declare var $: any;
   styleUrls: ['add-cash-flow.component.css']
 })
 
-export class AddCashFlowComponent implements OnInit {
+export class AddCashFlowComponent
+  implements OnInit {
 
   private cashFlowForm;
 
@@ -50,7 +51,17 @@ export class AddCashFlowComponent implements OnInit {
     );
 
     this.cashFlowForm.valueChanges.subscribe(function (el) {
-      console.log(el);
+      $('select').material_select();
+    });
+
+
+    Observable.merge(
+      this.optionsCurrency,
+      this.optionsFlowType
+    ).subscribe(function () {
+      setTimeout(() => {
+        $('select').material_select();
+      }, 0);
     });
 
     $('.modal').modal();

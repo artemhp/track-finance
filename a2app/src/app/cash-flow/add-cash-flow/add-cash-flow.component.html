@@ -5,11 +5,11 @@
   </div>
   <div class="card-content">
     <div class="row">
-      <div class="col s5">
-        <label>Flow Type</label>
-        <select class="browser-default" formControlName="type">
+      <div class="col s5 input-field">
+        <select formControlName="type">
           <option *ngFor="let option of optionsFlowType | async" [value]="option['$key']">{{option['$key']}}</option>
         </select>
+        <label>Flow Type</label>
       </div>
       <div class="col s7">
         <label style="opacity: 0">Category</label>
@@ -24,11 +24,11 @@
         <input placeholder="Input cash" type="number" formControlName="amount">
         <label for="amount">Amount</label>
       </div>
-      <div class="s6 col">
-        <label>Currency</label>
-        <select class="browser-default" formControlName="currency">
+      <div class="s6 col input-field">
+        <select formControlName="currency">
           <option *ngFor="let option of optionsCurrency | async" [value]="option['$key']">{{option['$key']}}</option>
         </select>
+        <label>Currency</label>
       </div>
     </div>
     <div class="row">
