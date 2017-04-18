@@ -13,17 +13,17 @@ export class LineChartComponent implements OnInit {
   }
 
   // lineChart
-  public lineChartData:Array<any> = [
+  public lineChartData: Array<any> = [
     {
       data: [65, 44, 59, 80, 81, 56, 55, 40, 5],
       label: 'Series A'
     }
   ];
-  public lineChartLabels:Array<any> = ['1', '2', '3', '4', '5', '6', '7', '8'];
-  public lineChartOptions:any = {
+  public lineChartLabels: Array<any> = ['1', '2', '3', '4', '5', '6', '7', '8'];
+  public lineChartOptions: any = {
     responsive: true
   };
-  public lineChartColors:Array<any> = [
+  public lineChartColors: Array<any> = [
     { // grey
       backgroundColor: 'rgba(148,159,177,0.2)',
       borderColor: 'rgba(148,159,177,1)',
@@ -33,15 +33,15 @@ export class LineChartComponent implements OnInit {
       pointHoverBorderColor: 'rgba(148,159,177,0.8)'
     }
   ];
-  public lineChartLegend:boolean = false;
-  public lineChartType:string = 'line';
+  public lineChartLegend: boolean = false;
+  public lineChartType: string = 'line';
 
   // events
-  public chartClicked(e:any):void {
+  public chartClicked(e: any): void {
     console.log(e);
   }
 
-  public chartHovered(e:any):void {
+  public chartHovered(e: any): void {
     console.log(e);
   }
 

@@ -16,16 +16,32 @@ export class AddCashFlowComponent
   implements OnInit {
 
   private cashFlowForm;
+  private dateFormatter;
 
   private optionsCurrency: FirebaseListObservable<any>;
   private optionsFlowType: FirebaseListObservable<any>;
   private optionsCategory: FirebaseListObservable<any>;
+
+  private optionsCategoryList: any;
 
   private onSubmit = function ({ value, valid }) {
     if (valid) {
       let [year, month, day] = value.date.split('-');
       value.date = new Date(year, (+month - 1), day);
     }
+  }
+
+  private onSelectCategory = function () {
+    this.optionsCategory.subscribe((el) => {
+      this.optionsCategoryList = el;
+      setTimeout(() => {
+        $('.ui.basic.modal').modal('show');
+      }, 0);
+    });
+  }
+
+  private patchValue = function (name, value) {
+    this.cashFlowForm.controls[name].patchValue(value);
   }
 
   constructor(
@@ -40,32 +56,26 @@ export class AddCashFlowComponent
     this.optionsFlowType = this.af.database.list('/flowType');
     this.optionsCategory = this.af.database.list('/category');
 
+    this.dateFormatter = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+
     this.cashFlowForm = this.fb.group(
       {
-        'type': ['Income', Validators.required],
+        'type': ['income', Validators.required],
         'amount': ['200', Validators.required],
         'currency': ['UAH', Validators.required],
         'category': ['', Validators.required],
-        'date': this.datePipe.transform(new Date(), 'yyyy-MM-dd')
+        'location': '',
+        'date': this.dateFormatter
       }
     );
-
-    this.cashFlowForm.valueChanges.subscribe(function (el) {
-      $('select').material_select();
-    });
-
 
     Observable.merge(
       this.optionsCurrency,
       this.optionsFlowType
     ).subscribe(function () {
       setTimeout(() => {
-        $('select').material_select();
+        $('.ui.dropdown').dropdown();
       }, 0);
     });
-
-    $('.modal').modal();
-
   }
-
 }

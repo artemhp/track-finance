@@ -1,57 +1,103 @@
-<form class="card" [formGroup]="cashFlowForm" materialize (ngSubmit)="onSubmit(cashFlowForm)">
-  <div class="card-image">
-    <img src="/assets/sidebar-bg.jpg">
-    <span class="card-title">Any Updates?</span>
-  </div>
-  <div class="card-content">
-    <div class="row">
-      <div class="col s5 input-field">
-        <select formControlName="type">
-          <option *ngFor="let option of optionsFlowType | async" [value]="option['$key']">{{option['$key']}}</option>
-        </select>
-        <label>Flow Type</label>
+<div class="ui divider"></div>
+<form class="ui form" [formGroup]="cashFlowForm" (ngSubmit)="onSubmit(cashFlowForm)">
+  <div class="">
+    <!--<a class="ui red ribbon label">Any Updates?</a>-->
+    <div class="ui grid vertically padded">
+      <div class="row">
+        <div class="eight wide column right aligned">
+          <div class="ui buttons tiny">
+            <button class="ui button" type="button" [ngClass]="{'active green': cashFlowForm.value.type == 'income'}" (click)="patchValue('type', 'income')">Income</button>
+            <button class="ui button" type="button" [ngClass]="{'active green': cashFlowForm.value.type == 'expence'}" (click)="patchValue('type', 'expence')">Expences</button>
+          </div>
+        </div>
+        <div class="eight wide column right aligned">
+          <button class="ui button fluid tiny" type="button" (click)="onSelectCategory()">
+            <span *ngIf='!cashFlowForm.value.category'>Select Category</span>
+            <span *ngIf='cashFlowForm.value.category'>{{cashFlowForm.value.category}}</span>
+          </button>
+          <input type="hidden" formControlName="category">
+        </div>
       </div>
-      <div class="col s7">
-        <label style="opacity: 0">Category</label>
-        <button class="btn waves-effect waves-light grey lighten-1 btn-block" data-target="modal1" name="action">
-          <small>Select Category</small>
-        </button>
-        <input type="hidden" formControlName="category">
+      <div class="row z-padding-row">
+        <div class="five wide column">
+          <div class="field">
+            <input placeholder="Input cash" type="number" formControlName="amount">
+          </div>
+        </div>
+        <div class="four wide column middle aligned">
+          <div class="ui compact dropdown">
+            <input type="hidden" name="currency" formControlName="currency">
+            <div class="default text"> </div>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <div class="item" *ngFor="let option of optionsCurrency | async" (click)="patchValue('currency', option['$key'])">
+                {{option['$key']}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="seven wide column middle aligned">
+          <div class="field">
+            <div class="ui left icon transparent input small">
+              <input type="date" class="datepicker" formControlName="date">
+              <i class="calendar icon"></i>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="input-field s6 col">
-        <input placeholder="Input cash" type="number" formControlName="amount">
-        <label for="amount">Amount</label>
+      <div class="row">
+        <div class="eight wide column middle aligned">
+          <div class="ui search">
+            <div class="ui left icon input">
+              <input class="prompt" type="text" placeholder="<Location></Location>">
+              <i class="map outline icon"></i>
+            </div>
+          </div>
+        </div>
+        <div class="eight wide column">
+          <button [disabled]="!cashFlowForm.valid" class="positive ui button fluid" type="submit" name="action">
+            Confirm
+          </button>
+        </div>
       </div>
-      <div class="s6 col input-field">
-        <select formControlName="currency">
-          <option *ngFor="let option of optionsCurrency | async" [value]="option['$key']">{{option['$key']}}</option>
-        </select>
-        <label>Currency</label>
-      </div>
-    </div>
-    <div class="row">
-      <div class="input-field s12 col">
-        <input type="date" formControlName="date">
-        <label for="date" class="active">Date</label>
-      </div>
-    </div>
-    <!-- Modal Structure -->
-    <div id="modal1" class="modal bottom-sheet">
-      <div class="modal-content">
-        <div class="collection">
-          <div class="collection-item modal-close" *ngFor="let option of optionsCategory | async" [ngClass]="{'active': option['$key'] == cashFlowForm.get('category').value}"
-            (click)="cashFlowForm.patchValue({'category': option['$key']})">
-            <i class="material-icons left">done</i> {{option['$key']}}
+
+      <div class="ui basic modal">
+        <div class="ft-modal-wrap">
+          <div class="ft-modal-top">
+            <div class="ui icon header">
+              Select category of your {{cashFlowForm.value.type}}
+            </div>
+            <div class="ui middle aligned selection list inverted">
+              <div class="item" *ngFor="let option of optionsCategoryList" [ngClass]="{'active': option['$key'] == cashFlowForm.get('category').value}" (click)="cashFlowForm.patchValue({'category': option['$key']})">
+                <i class="large middle aligned icon" [ngClass]="option['icon'] || 'book'"></i>
+                <div class="content">
+                  <div class="header">{{option['$key']}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ft-modal-bottom">
+            <div class="ui icon header">
+              Select category of your {{cashFlowForm.value.type}}
+            </div>
+            <div class="content">
+              <div class="ui action input">
+                <input type="text" value="http://ww.short.url/c0opq">
+                <button class="ui teal right labeled icon button">
+              <i class="copy icon"></i>
+              Create
+            </button>
+              </div>
+            </div>
+            <div class="actions">
+              <div class="ui red basic inverted button">
+                <i class="remove icon"></i> Cancel
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="">
-      <button [disabled]="!cashFlowForm.valid" class="btn waves-effect waves-light btn-block" type="submit" name="action">
-        Confirm <i class="material-icons right">send</i>
-    </button>
-    </div>
   </div>
 </form>
+<div class="ui divider"></div>

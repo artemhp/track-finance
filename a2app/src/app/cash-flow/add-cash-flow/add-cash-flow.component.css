@@ -1,32 +1,9 @@
-.card-title {
-  margin-bottom: 0;
-  margin-top: 0;
+.row.z-padding-row {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
-.btn-block {
-  width: 100%;
-}
-
-.row {
-  margin-bottom: 0;
-}
-
-.collection-item.active .material-icons {
-  opacity: 1;
-}
-
-.collection-item:not(.active) .material-icons {
-  opacity: 0.4;
-  color: gray !important;
-
-}
-
-.card-title {
-  background-color: rgba(0,0,0,0.5);
-
-}
-
-
-.modal.bottom-sheet {
-  min-height: 80%;
+form {
+  margin-top: -10px;
+  margin-bottom: -10px;
 }

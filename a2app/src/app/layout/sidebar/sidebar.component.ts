@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-declare var $:any;
+declare var $: any;
 
 @Component({
   selector: 'app-sidebar',
@@ -11,15 +11,7 @@ export class SidebarComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    $('.button-navigation').sideNav({
-      menuWidth: 300,
-      edge: 'left',
-      closeOnClick: true,
-      draggable: true
-    });
-    $(".drag-target").on("swipeleft", function () {
-      $("#sidenav-overlay").trigger("click");
-    });
+
   }
 
 }
