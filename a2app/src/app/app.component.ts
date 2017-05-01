@@ -11,8 +11,6 @@ declare var $: any;
 })
 export class AppComponent {
 
-  user = {};
-
   constructor(public loginService: LoginService, public router: Router) {
     this.loginService.userInfo.subscribe((el) => {
       if (!el) {
@@ -21,10 +19,6 @@ export class AppComponent {
         this.router.navigate([this.loginService.redirect('/dashboard')]);
       }
     });
-  }
-
-  login() {
-    this.loginService.login();
   }
 
   logout() {

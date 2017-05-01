@@ -17,7 +17,7 @@ import { ListCashFlowComponent } from './cash-flow/list-cash-flow/list-cash-flow
 import { DashboardPageComponent } from './dashboard/dashboard-page/dashboard-page.component';
 
 import { ApplicationGuard } from './core/application.guard';
-import { LoginPageComponent } from './login/login-page/login-page.component';
+import { LoginPageComponent } from './login-page/login-page.component';
 import { LoginService } from './core/login.service';
 
 const appRoutes: Routes = [

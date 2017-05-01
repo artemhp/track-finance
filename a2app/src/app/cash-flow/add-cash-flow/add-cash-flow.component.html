@@ -1,16 +1,15 @@
-<div class="ui divider"></div>
 <form class="ui form" [formGroup]="cashFlowForm" (ngSubmit)="onSubmit(cashFlowForm)">
   <div class="">
     <!--<a class="ui red ribbon label">Any Updates?</a>-->
     <div class="ui grid vertically padded">
       <div class="row">
-        <div class="eight wide column right aligned">
+        <div class="eight wide column">
           <div class="ui buttons tiny">
             <button class="ui button" type="button" [ngClass]="{'active green': cashFlowForm.value.type == 'income'}" (click)="patchValue('type', 'income')">Income</button>
             <button class="ui button" type="button" [ngClass]="{'active green': cashFlowForm.value.type == 'expence'}" (click)="patchValue('type', 'expence')">Expences</button>
           </div>
         </div>
-        <div class="eight wide column right aligned">
+        <div class="eight wide column">
           <button class="ui button fluid tiny" type="button" (click)="onSelectCategory()">
             <span *ngIf='!cashFlowForm.value.category'>Select Category</span>
             <span *ngIf='cashFlowForm.value.category'>{{cashFlowForm.value.category}}</span>
