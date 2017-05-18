@@ -52,9 +52,9 @@ export class AddCashFlowComponent
 
   ngOnInit() {
 
-    this.optionsCurrency = this.af.database.list('/general/currency');
-    this.optionsFlowType = this.af.database.list('/general/flowType');
-    this.optionsCategory = this.af.database.list('/general/category');
+    this.optionsCurrency = this.af.database.list('/default/currency');
+    this.optionsFlowType = this.af.database.list('/default/flowType');
+    this.optionsCategory = this.af.database.list('/default/category');
 
     this.dateFormatter = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
 

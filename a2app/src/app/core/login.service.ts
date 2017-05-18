@@ -2,15 +2,19 @@ import { Injectable } from '@angular/core';
 import { AngularFire, AuthProviders } from 'angularfire2';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { StatusService } from '../core/status.service';
+import { FirebaseWalletService } from "../firebase/firebaseWallet.service";
 import 'rxjs/add/operator/do';
 
 @Injectable()
 export class LoginService {
 
-  constructor(public af: AngularFire, public router: Router) { }
-
-  isLoggedIn = false;
-  redirectUrl: string;
+  constructor(
+    public af: AngularFire,
+    public status: StatusService,
+    public router: Router,
+    public createfirstwallet: FirebaseWalletService
+  ) { }
 
   login() {
     this.af.auth.login({
@@ -19,86 +23,23 @@ export class LoginService {
   }
 
   redirect(byDefault) {
-    if (this.redirectUrl == '/login') {
+    if (this.status.redirectUrl == '/login') {
       return byDefault;
     }
-    return this.redirectUrl || byDefault;
+    return this.status.redirectUrl || byDefault;
   }
 
   userInfo = this.af.auth.do((val) => {
-    
-    const userWalletRef = this.af.database.list('/users/'+val.uid+'/wallets');
-    const walletRef = this.af.database.list('/wallets');    
-    const walletObj = {
-      'money': 0, 
-      'transactions': 0
-    };
-    const cat = [
-      'Communcation, PC',
-      'Financial Expernses',
-      'Food and Drinks',
-      'Housing Income',
-      'Transportation'
-    ];
-
-    function pushCategories (wallet) {
-      let pr = [];
-      const categoriesRef = wallet.ref.child('category');          
-      for (let i in cat) {
-        let category = categoriesRef.push({
-          'name': cat[i],
-          'count': 0,
-          'uid': val.uid
-        });
-        pr.push(category);
-      }
-      return Promise.all(pr).then(() => wallet.getKey());
+    if (val && val.uid) {
+      this.status.isLoggedIn = true;
+      this.status.uid = val.uid;
+      this.createfirstwallet.generateWallet(this.status.uid, 'Cash').subscribe((e) => {
+        console.log(e);
+      }, (err) => {
+        console.log(err.message);
+      });
+      this.createfirstwallet.generateDafault().then(() => 'Success', () => 'Default is already exist');
     }
-
-    userWalletRef
-      .take(1)
-      .filter(w => !w.length)
-      .flatMap((w) => walletRef.push(walletObj).then(w => pushCategories(w)))
-      .flatMap((w) => userWalletRef.push(w))      
-      .subscribe((el) => console.log(el)); 
-
-    // const categoriesRef = this.af.database.list('/categories/');
-    // const usersRef = this.af.database.list('/users/'+val.uid+'/categories');
-
-    // const cat = [
-    //   'Communcation, PC',
-    //   'Financial Expernses',
-    //   'Food and Drinks',
-    //   'Housing Income',
-    //   'Transportation'
-    //   ];
-
-    //   function pushToCategory (e) {        
-    //     let pr = [];
-    //     for (let i in cat) {
-    //       let category = categoriesRef.push({
-    //         'name': cat[i],
-    //         'count': 0,
-    //         'parent': '',
-    //         'uid': val.uid
-    //       });
-    //       pr.push(category);
-    //     }        
-    //     return Promise.all(pr); 
-    //   }
-    
-    // usersRef
-    //   .take(1)
-    //   .filter(el => !el.length)
-    //   .flatMap(() => pushToCategory(cat))
-    //   .map(el => el['key'])
-    //   .subscribe((el) => {        
-    //     console.log(el);
-    //     }
-    //   );  
-
-    this.isLoggedIn = true;  
-      
   });
 
   logout() {

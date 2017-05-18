@@ -18,6 +18,8 @@ import { DashboardPageComponent } from './dashboard/dashboard-page/dashboard-pag
 
 import { ApplicationGuard } from './core/application.guard';
 import { LoginPageComponent } from './login-page/login-page.component';
+import { StatusService } from './core/status.service';
+import { FirebaseWalletService } from "./firebase/firebaseWallet.service";
 import { LoginService } from './core/login.service';
 
 const appRoutes: Routes = [
@@ -72,7 +74,7 @@ export const firebaseConfig = {
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [DatePipe, ApplicationGuard, LoginService],
+  providers: [DatePipe, ApplicationGuard, FirebaseWalletService, LoginService, StatusService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
