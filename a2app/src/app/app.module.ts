@@ -30,8 +30,7 @@ const appRoutes: Routes = [
   },
   {
     path: 'login',
-    component: LoginPageComponent,
-    canActivate: [ApplicationGuard]
+    component: LoginPageComponent
   },
   {
     path: '',
