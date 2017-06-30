@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFire, AuthProviders } from 'angularfire2';
-import { LoginService } from './core/login.service';
+import { LoginService } from './login-page/login-page.service';
 declare var $: any;
 
 @Component({
@@ -19,10 +19,6 @@ export class AppComponent {
         this.router.navigate([this.loginService.redirect('/dashboard')]);
       }
     });
-  }
-
-  logout() {
-    this.loginService.logout();
   }
 
 }

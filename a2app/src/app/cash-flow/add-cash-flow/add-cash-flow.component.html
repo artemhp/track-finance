@@ -5,8 +5,8 @@
       <div class="row">
         <div class="eight wide column">
           <div class="ui buttons tiny">
-            <button class="ui button" type="button" [ngClass]="{'active green': cashFlowForm.value.type == 'income'}" (click)="patchValue('type', 'income')">Income</button>
-            <button class="ui button" type="button" [ngClass]="{'active green': cashFlowForm.value.type == 'expence'}" (click)="patchValue('type', 'expence')">Expences</button>
+            <button class="ui button" type="button" [ngClass]="{'active green': cashFlowForm.value.type == 'income'}" (click)="cashFlowFormService.changeCashFlowForm('type', 'income')">Income</button>
+            <button class="ui button" type="button" [ngClass]="{'active green': cashFlowForm.value.type == 'expence'}" (click)="cashFlowFormService.changeCashFlowForm('type', 'expence')">Expences</button>
           </div>
         </div>
         <div class="eight wide column">
@@ -29,7 +29,7 @@
             <div class="default text"> </div>
             <i class="dropdown icon"></i>
             <div class="menu">
-              <div class="item" *ngFor="let option of optionsCurrency | async" (click)="patchValue('currency', option['$key'])">
+              <div class="item" *ngFor="let option of optionsCurrency | async" (click)="cashFlowFormService.changeCashFlowForm('currency', option['$key'])">
                 {{option['$key']}}
               </div>
             </div>
@@ -48,7 +48,7 @@
         <div class="eight wide column middle aligned">
           <div class="ui search">
             <div class="ui left icon input">
-              <input class="prompt" type="text" placeholder="<Location></Location>">
+              <input class="prompt" type="text" placeholder="Location">
               <i class="map outline icon"></i>
             </div>
           </div>
@@ -59,43 +59,7 @@
           </button>
         </div>
       </div>
-
-      <div class="ui basic modal">
-        <div class="ft-modal-wrap">
-          <div class="ft-modal-top">
-            <div class="ui icon header">
-              Select category of your {{cashFlowForm.value.type}}
-            </div>
-            <div class="ui middle aligned selection list inverted">
-              <div class="item" *ngFor="let option of optionsCategoryList" [ngClass]="{'active': option['$key'] == cashFlowForm.get('category').value}" (click)="cashFlowForm.patchValue({'category': option['$key']})">
-                <i class="large middle aligned icon" [ngClass]="option['icon'] || 'book'"></i>
-                <div class="content">
-                  <div class="header">{{option['$key']}}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="ft-modal-bottom">
-            <div class="ui icon header">
-              Select category of your {{cashFlowForm.value.type}}
-            </div>
-            <div class="content">
-              <div class="ui action input">
-                <input type="text" value="http://ww.short.url/c0opq">
-                <button class="ui teal right labeled icon button">
-              <i class="copy icon"></i>
-              Create
-            </button>
-              </div>
-            </div>
-            <div class="actions">
-              <div class="ui red basic inverted button">
-                <i class="remove icon"></i> Cancel
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <app-category-editor [categoryForm]="cashFlowForm"></app-category-editor>
     </div>
   </div>
 </form>

@@ -1,9 +1,9 @@
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { DatePipe } from '@angular/common'
 import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
 import { CashFlow } from "../cash-flow.interface";
 import { Observable } from "rxjs";
+import { CashFlowFormService } from "../cash-flow-form.service";
 declare var $: any;
 
 @Component({
@@ -20,9 +20,9 @@ export class AddCashFlowComponent
 
   private optionsCurrency: FirebaseListObservable<any>;
   private optionsFlowType: FirebaseListObservable<any>;
-  private optionsCategory: FirebaseListObservable<any>;
+  //private optionsCategory: FirebaseListObservable<any>;
 
-  private optionsCategoryList: any;
+
 
   private onSubmit = function ({ value, valid }) {
     if (valid) {
@@ -32,50 +32,23 @@ export class AddCashFlowComponent
   }
 
   private onSelectCategory = function () {
-    this.optionsCategory.subscribe((el) => {
-      this.optionsCategoryList = el;
-      setTimeout(() => {
-        $('.ui.basic.modal').modal('show');
-      }, 0);
-    });
-  }
-
-  private patchValue = function (name, value) {
-    this.cashFlowForm.controls[name].patchValue(value);
+    setTimeout(() => $('.ui.basic.modal').modal('show'), 0);
   }
 
   constructor(
     private af: AngularFire,
-    private datePipe: DatePipe,
-    private fb: FormBuilder
+    private cashFlowFormService: CashFlowFormService
   ) { }
 
   ngOnInit() {
 
     this.optionsCurrency = this.af.database.list('/default/currency');
     this.optionsFlowType = this.af.database.list('/default/flowType');
-    this.optionsCategory = this.af.database.list('/default/category');
+    //this.optionsCategory = this.af.database.list('/default/category');    
 
-    this.dateFormatter = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    this.cashFlowForm = this.cashFlowFormService.getCashFlowForm();
 
-    this.cashFlowForm = this.fb.group(
-      {
-        'type': ['income', Validators.required],
-        'amount': ['200', Validators.required],
-        'currency': ['UAH', Validators.required],
-        'category': ['', Validators.required],
-        'location': '',
-        'date': this.dateFormatter
-      }
+    Observable.merge(this.optionsCurrency, this.optionsFlowType).subscribe(() => setTimeout(() => $('.ui.dropdown').dropdown(), 0)
     );
-
-    Observable.merge(
-      this.optionsCurrency,
-      this.optionsFlowType
-    ).subscribe(function () {
-      setTimeout(() => {
-        $('.ui.dropdown').dropdown();
-      }, 0);
-    });
   }
 }

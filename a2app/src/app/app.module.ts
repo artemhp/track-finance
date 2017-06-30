@@ -19,8 +19,12 @@ import { DashboardPageComponent } from './dashboard/dashboard-page/dashboard-pag
 import { ApplicationGuard } from './core/application.guard';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { StatusService } from './core/status.service';
+import { CashFlowFormService } from './cash-flow/cash-flow-form.service';
+
 import { FirebaseWalletService } from "./firebase/firebaseWallet.service";
-import { LoginService } from './core/login.service';
+import { LoginService } from './login-page/login-page.service';
+import { LogoutDirective } from './logout/logout.directive';
+import { CategoryEditorComponent } from './cash-flow/category-editor/category-editor.component';
 
 const appRoutes: Routes = [
   {
@@ -59,7 +63,9 @@ export const firebaseConfig = {
     AddCashFlowComponent,
     ListCashFlowComponent,
     DashboardPageComponent,
-    LoginPageComponent
+    LoginPageComponent,
+    LogoutDirective,
+    CategoryEditorComponent
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig, {
@@ -73,7 +79,14 @@ export const firebaseConfig = {
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [DatePipe, ApplicationGuard, FirebaseWalletService, LoginService, StatusService],
+  providers: [
+    DatePipe,
+    ApplicationGuard,
+    FirebaseWalletService,
+    LoginService,
+    StatusService,
+    CashFlowFormService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
