@@ -18,8 +18,8 @@ export class AddCashFlowComponent
   private cashFlowForm;
   private dateFormatter;
 
-  private optionsCurrency: FirebaseListObservable<any>;
-  private optionsFlowType: FirebaseListObservable<any>;
+  // private optionsCurrency: FirebaseListObservable<any>;
+  // private optionsFlowType: FirebaseListObservable<any>;
   //private optionsCategory: FirebaseListObservable<any>;
 
 
@@ -42,13 +42,8 @@ export class AddCashFlowComponent
 
   ngOnInit() {
 
-    this.optionsCurrency = this.af.database.list('/default/currency');
-    this.optionsFlowType = this.af.database.list('/default/flowType');
-    //this.optionsCategory = this.af.database.list('/default/category');    
-
     this.cashFlowForm = this.cashFlowFormService.getCashFlowForm();
 
-    Observable.merge(this.optionsCurrency, this.optionsFlowType).subscribe(() => setTimeout(() => $('.ui.dropdown').dropdown(), 0)
-    );
+    //Observable.merge(this.optionsCurrency, this.optionsFlowType).subscribe(() => setTimeout(() => $('.ui.dropdown').dropdown(), 0));
   }
 }

@@ -3,7 +3,7 @@ import { AngularFire, AuthProviders } from 'angularfire2';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { StatusService } from '../core/status.service';
-import { FirebaseWalletService } from "../firebase/firebaseWallet.service";
+import { GenerateWalletService } from "../wallet/wallet-create/generate-wallet.service";
 import 'rxjs/add/operator/do';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class LoginService {
     public af: AngularFire,
     public status: StatusService,
     public router: Router,
-    public createfirstwallet: FirebaseWalletService
+    public createfirstwallet: GenerateWalletService
   ) { }
 
   login() {
@@ -33,12 +33,13 @@ export class LoginService {
     if (val && val.uid) {
       this.status.isLoggedIn = true;
       this.status.uid = val.uid;
-      this.createfirstwallet.generateWallet(this.status.uid, 'Cash').subscribe((e) => {
-        console.log(e);
-      }, (err) => {
-        console.log(err.message);
-      });
-      this.createfirstwallet.generateDafault().then(() => 'Success', () => 'Default is already exist');
+      this.createfirstwallet.generateWallet(this.status.uid, 'Cash')
+        .subscribe((e) => {
+          console.log(e);
+        }, err => {
+          console.log(err.message);
+        });
+
     }
   });
 

@@ -1,31 +1,20 @@
 <div class="ui basic modal">
-  <div class="ft-modal-wrap">
-    <div class="ft-modal-top">
-      <div class="ui icon header">
-        Select category of your {{categoryForm.value.type}}
-      </div>
-      <div class="ui middle aligned selection list inverted">
-        <div class="item" *ngFor="let category of optionsCategoryList" [ngClass]="{'active': checkCurrentCategory(category['title'])}" (click)="cashFlowFormService.changeCashFlowForm('category', category['title'])">
-          <i class="large middle aligned icon" [ngClass]="category['img'] || 'book'"></i>
-          <div class="content">
-            <div class="header">{{category['title']}}</div>
-          </div>
+  <div class="ui icon header">
+    Select category of your {{categoryForm.value.type}}
+  </div>
+  <div class="content">
+    <div class="ui middle aligned selection list inverted">
+      <div class="item" *ngFor="let category of optionsCategoryList" [ngClass]="{'active': checkCurrentCategory(category['title'])}" (click)="cashFlowFormService.changeCashFlowForm('category', category['title'])">
+        <i class="large middle aligned icon" [ngClass]="category['img'] || 'book'"></i>
+        <div class="content">
+          <div class="header">{{category['title']}}</div>
         </div>
       </div>
     </div>
-    <div class="ft-modal-bottom">
-      <div class="ui icon header">Select category of your {{categoryForm.value.type}}</div>
-      <div class="content">
-        <div class="ui action input">
-          <input type="text" value="">
-          <button class="ui teal right labeled icon button" (click)="createCategory()"><i class="copy icon"></i>Create</button>
-        </div>
-      </div>
-      <div class="actions">
-        <div class="ui red basic inverted button">
-          <i class="remove icon"></i> Cancel
-        </div>
-      </div>
+  </div>
+  <div class="actions">
+    <div class="ui red basic cancel inverted button">
+      <i class="remove icon"></i> Cancel
     </div>
   </div>
 </div>

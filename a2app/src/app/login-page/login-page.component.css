@@ -1,0 +1,17 @@
+.ft-login-wrapper {
+    max-width: 300px;
+    margin: 0 auto;    
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.ft-login-logo {
+    width: 150px;
+    margin: 0 auto;    
+    display: flex;
+}
+
+.ft-login-wrapper > div {
+    flex-grow: 1;
+}

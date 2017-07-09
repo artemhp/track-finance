@@ -1,3 +1,29 @@
-<button md-raised-button (click)="login()">
-  Use My Google Account
-</button>
+<div class="ft-login-wrapper">
+  <div class="ft-login-logo">
+    <img src="/assets/cloud-computing.svg" alt="">
+  </div>
+  <div class="ui form">
+    <div class="field">
+      <button class="ui facebook button fluid">
+          <i class="facebook icon"></i> 
+          Login with Facebook
+        </button>
+    </div>
+    <div class="field">
+      <button class="ui twitter button fluid">
+          <i class="twitter icon"></i>
+          Twitter
+        </button>
+    </div>
+    <div class="field">
+      <button class="ui google plus button fluid" md-raised-button (click)="login()">
+          <i class="google plus icon"></i>
+          Google
+        </button>
+    </div>
+  </div>
+  <div class="ui center aligned container">
+    By creating an account, you agree to the Finance Tracker
+    <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+  </div>
+</div>

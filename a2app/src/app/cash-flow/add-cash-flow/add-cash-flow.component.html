@@ -1,10 +1,10 @@
-<form class="ui form" [formGroup]="cashFlowForm" (ngSubmit)="onSubmit(cashFlowForm)">
+<form class="ui tiny form" [formGroup]="cashFlowForm" (ngSubmit)="onSubmit(cashFlowForm)">
   <div class="">
     <!--<a class="ui red ribbon label">Any Updates?</a>-->
     <div class="ui grid vertically padded">
       <div class="row">
         <div class="eight wide column">
-          <div class="ui buttons tiny">
+          <div class="ui fluid buttons tiny">
             <button class="ui button" type="button" [ngClass]="{'active green': cashFlowForm.value.type == 'income'}" (click)="cashFlowFormService.changeCashFlowForm('type', 'income')">Income</button>
             <button class="ui button" type="button" [ngClass]="{'active green': cashFlowForm.value.type == 'expence'}" (click)="cashFlowFormService.changeCashFlowForm('type', 'expence')">Expences</button>
           </div>
@@ -18,20 +18,11 @@
         </div>
       </div>
       <div class="row z-padding-row">
-        <div class="five wide column">
+        <div class="nine wide column">
           <div class="field">
-            <input placeholder="Input cash" type="number" formControlName="amount">
-          </div>
-        </div>
-        <div class="four wide column middle aligned">
-          <div class="ui compact dropdown">
-            <input type="hidden" name="currency" formControlName="currency">
-            <div class="default text"> </div>
-            <i class="dropdown icon"></i>
-            <div class="menu">
-              <div class="item" *ngFor="let option of optionsCurrency | async" (click)="cashFlowFormService.changeCashFlowForm('currency', option['$key'])">
-                {{option['$key']}}
-              </div>
+            <div class="ui fluid right labeled input">
+              <input type="number" formControlName="amount" placeholder="Enter Amount">
+              <div class="ui basic label">UAH</div>
             </div>
           </div>
         </div>
@@ -47,7 +38,7 @@
       <div class="row">
         <div class="eight wide column middle aligned">
           <div class="ui search">
-            <div class="ui left icon input">
+            <div class="ui left icon input fluid">
               <input class="prompt" type="text" placeholder="Location">
               <i class="map outline icon"></i>
             </div>
@@ -63,4 +54,3 @@
     </div>
   </div>
 </form>
-<div class="ui divider"></div>
