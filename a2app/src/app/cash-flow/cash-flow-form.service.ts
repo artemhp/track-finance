@@ -16,10 +16,12 @@ export class CashFlowFormService {
 
   private cashFlowValues = {
     'type': 'income',
-    'amount': '200',
+    'amount': '',
     'currency': 'UAH',
     'category': '',
     'location': '',
+    'wallet': '',
+    'walletId': '',
     'date': this.datePipe.transform(new Date(), 'yyyy-MM-dd')
   };
 
@@ -32,6 +34,8 @@ export class CashFlowFormService {
       'currency': [this.cashFlowValues.currency, Validators.required],
       'category': ['', Validators.required],
       'location': '',
+      'wallet': '',
+      'walletId': '',
       'date': this.cashFlowValues.date
     });
   }

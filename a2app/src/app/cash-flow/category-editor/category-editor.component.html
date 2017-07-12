@@ -1,10 +1,14 @@
+<button class="ui button fluid tiny" type="button" (click)="onSelectCategory()">
+  <span *ngIf="!categoryTitle">Select Category</span>  
+  <span *ngIf="categoryTitle">{{categoryTitle}}</span>
+</button>
 <div class="ui basic modal">
   <div class="ui icon header">
     Select category of your {{categoryForm.value.type}}
   </div>
   <div class="content">
     <div class="ui middle aligned selection list inverted">
-      <div class="item" *ngFor="let category of optionsCategoryList" [ngClass]="{'active': checkCurrentCategory(category['title'])}" (click)="cashFlowFormService.changeCashFlowForm('category', category['title'])">
+      <div class="item" *ngFor="let category of optionsCategoryList" [ngClass]="{'active': checkCurrentCategory(category['title'])}" (click)="submitCategory(category['title'])">
         <i class="large middle aligned icon" [ngClass]="category['img'] || 'book'"></i>
         <div class="content">
           <div class="header">{{category['title']}}</div>

@@ -16,8 +16,26 @@ export class CategoryEditorComponent implements OnInit {
   @Input() categoryForm;
   constructor(private af: AngularFire, private cashFlowFormService: CashFlowFormService) { }
 
+  private onSelectCategory = function () {
+    $('.ui.basic.modal').modal('show');
+    const walletId = this.cashFlowFormService.cashFlowForm.get('walletId').value;
+    this.af.database.list('/wallets/' + walletId + '/category')
+      .subscribe(list => this.optionsCategoryList = list);
+  }
+
+  private submitCategory = function (title) {
+    this.cashFlowFormService.changeCashFlowForm('category', title);
+    $('.ui.basic.modal').modal('hide');
+  }
+
+  private categoryTitle = '';
+
+
   ngOnInit() {
-    this.af.database.list('/default/category').subscribe(list => this.optionsCategoryList = list);
+    this.cashFlowFormService.cashFlowForm.get('category').valueChanges.subscribe(data => {
+      this.categoryTitle = data;
+      console.log(data);
+    });
   }
 
 }
