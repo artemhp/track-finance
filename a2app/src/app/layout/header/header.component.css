@@ -16,3 +16,7 @@ button {
 .inverted.ui.menu button.item:focus {
     box-shadow: inset 0px -5000px 0px 0px rgba(255,255,255,0.3);
 }   
+
+.menu {
+    border-radius: 0;
+}

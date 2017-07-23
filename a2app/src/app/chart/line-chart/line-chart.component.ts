@@ -15,12 +15,32 @@ export class LineChartComponent implements OnInit {
   // lineChart
   public lineChartData: Array<any> = [
     {
-      data: [65, 44, 59, 80, 81, 56, 55, 40, 5],
+      data: ['5', '10', '12', '12', '10', '11', '40', '44', '40', '30', '50', '52', '52', '60', '60'],
       label: 'Series A'
     }
   ];
-  public lineChartLabels: Array<any> = ['1', '2', '3', '4', '5', '6', '7', '8'];
+  public lineChartLabels: Array<any> = ['1', '3', '5', '7', '9', '11', '13', '15', '17', '19', '21', '23', '25', '27', '29'];
   public lineChartOptions: any = {
+    scales: {
+      xAxes: [{
+        type: "time",
+        time: {
+          format: 'MM/DD/YYYY HH:mm',
+          // round: 'day'
+          tooltipFormat: 'll HH:mm'
+        },
+        scaleLabel: {
+          display: true,
+          labelString: 'Date'
+        }
+      },],
+      yAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'value'
+        }
+      }]
+    },
     responsive: true
   };
   public lineChartColors: Array<any> = [

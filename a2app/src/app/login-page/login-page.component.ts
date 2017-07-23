@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFire, AuthProviders } from 'angularfire2';
 import { Router } from '@angular/router';
 import { LoginService } from '../login-page/login-page.service';
 declare var $: any;

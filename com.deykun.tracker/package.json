@@ -1,0 +1,32 @@
+{
+    "name": "com.deykun.tracker",
+    "version": "1.0.0",
+    "displayName": "Finance Tracker",
+    "cordova": {
+        "platforms": [
+            "android"
+        ],
+        "plugins": {
+            "cordova-plugin-browsertab": {},
+            "cordova-plugin-buildinfo": {},
+            "cordova-plugin-customurlscheme": {
+                "URL_SCHEME": "com.deykun.tracker",
+                "ANDROID_SCHEME": " ",
+                "ANDROID_HOST": " ",
+                "ANDROID_PATHPREFIX": "/"
+            },
+            "cordova-plugin-inappbrowser": {},
+            "cordova-plugin-whitelist": {},
+            "cordova-universal-links-plugin": {}
+        }
+    },
+    "dependencies": {
+        "cordova-android": "^6.2.3",
+        "cordova-plugin-browsertab": "~0.2.0",
+        "cordova-plugin-buildinfo": "~1.1.0",
+        "cordova-plugin-customurlscheme": "~4.3.0",
+        "cordova-plugin-inappbrowser": "~1.7.1",
+        "cordova-plugin-whitelist": "1",
+        "cordova-universal-links-plugin": "~1.2.1"
+    }
+}

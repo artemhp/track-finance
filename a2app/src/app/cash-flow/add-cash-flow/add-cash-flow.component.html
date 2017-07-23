@@ -10,7 +10,7 @@
           </div>
         </div>
         <div class="eight wide column">
-          <app-category-editor [categoryForm]="cashFlowForm"></app-category-editor>
+          <app-category-editor [wallet]="currentWallet.id"></app-category-editor>
           <input type="hidden" formControlName="category">
         </div>
       </div>
@@ -21,7 +21,7 @@
               <input type="number" formControlName="amount" placeholder="Enter Amount">
               <div class="ui dropdown label">
                 <input type="hidden" name="wallet" formControlName="wallet">
-                <div class="default text"></div>
+                <div class="default text">{{currentWallet.title}}</div>
                 <i class="dropdown icon"></i>
                 <div class="menu">
                   <div class="item" *ngFor="let option of wallet" (click)="cashFlowFormService.changeCashFlowForm('wallet', option['title'])">

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../login-page/login-page.service';
+declare var $;
 
 @Component({
   selector: 'app-header',
@@ -11,6 +12,11 @@ export class HeaderComponent implements OnInit {
   constructor(public loginService: LoginService) { }
 
   ngOnInit() {
+    // $('.ui.sticky')
+    //   .sticky({
+    //     context: '#context'
+    //   })
+    //   ;
   }
 
   logout() {

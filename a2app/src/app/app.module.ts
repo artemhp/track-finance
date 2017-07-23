@@ -10,7 +10,9 @@ import { HeaderComponent } from './layout/header/header.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { LineChartComponent } from './chart/line-chart/line-chart.component';
 
-import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 import { DatePipe } from "@angular/common";
 import { AddCashFlowComponent } from "./cash-flow/add-cash-flow/add-cash-flow.component";
 import { ListCashFlowComponent } from './cash-flow/list-cash-flow/list-cash-flow.component';
@@ -23,15 +25,24 @@ import { CashFlowFormService } from './cash-flow/cash-flow-form.service';
 
 import { CategoryCreateService } from "./wallet/category-create/category-create.service";
 import { GenerateWalletService } from "./wallet/wallet-create/generate-wallet.service";
+import { WalletInfoService } from "./wallet/wallet-info/wallet-info.service";
+
+import { ShareWalletFormService } from "./settings/share-wallet-form.service";
 
 import { LoginService } from './login-page/login-page.service';
 import { LogoutDirective } from './logout/logout.directive';
 import { CategoryEditorComponent } from './cash-flow/category-editor/category-editor.component';
+import { SettingsPageComponent } from './settings-page/settings-page.component';
 
 const appRoutes: Routes = [
   {
     path: 'dashboard',
     component: DashboardPageComponent,
+    canActivate: [ApplicationGuard]
+  },
+  {
+    path: 'settings',
+    component: SettingsPageComponent,
     canActivate: [ApplicationGuard]
   },
   {
@@ -50,17 +61,19 @@ const appRoutes: Routes = [
 // Must export the config
 
 const ftBase = {
-  'apiKey': 'AIzaSyA94rul7WRhLdU_qREV16SfLfMJCFp9js0',
-  'authDomain': 'financemonitor-c4def.firebaseapp.com',
-  'databaseURL': 'https://financemonitor-c4def.firebaseio.com',
-  'storageBucket': 'financemonitor-c4def.appspot.com',
-  'messagingSenderId': '976368137034'
+  apiKey: "AIzaSyBs2rH4kaW2qQU8hAPkLm669zOQNkj5V0I",
+  authDomain: "finance-tracker-d9c2f.firebaseapp.com",
+  databaseURL: "https://finance-tracker-d9c2f.firebaseio.com",
+  projectId: "finance-tracker-d9c2f",
+  storageBucket: "finance-tracker-d9c2f.appspot.com",
+  messagingSenderId: "242139475776"
 }
 
 export const firebaseConfig = {
   apiKey: localStorage.apiKey || ftBase.apiKey,
   authDomain: localStorage.authDomain || ftBase.authDomain,
   databaseURL: localStorage.databaseURL || ftBase.databaseURL,
+  projectId: localStorage.projectId || ftBase.projectId,
   storageBucket: localStorage.storageBucket || ftBase.storageBucket,
   messagingSenderId: localStorage.messagingSenderId || ftBase.messagingSenderId
 };
@@ -76,13 +89,13 @@ export const firebaseConfig = {
     DashboardPageComponent,
     LoginPageComponent,
     LogoutDirective,
-    CategoryEditorComponent
+    CategoryEditorComponent,
+    SettingsPageComponent
   ],
   imports: [
-    AngularFireModule.initializeApp(firebaseConfig, {
-      provider: AuthProviders.Google,
-      method: AuthMethods.Popup
-    }),
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule,
     ChartsModule,
     BrowserModule,
     FormsModule,
@@ -97,7 +110,9 @@ export const firebaseConfig = {
     GenerateWalletService,
     LoginService,
     StatusService,
-    CashFlowFormService
+    CashFlowFormService,
+    WalletInfoService,
+    ShareWalletFormService
   ],
   bootstrap: [AppComponent]
 })

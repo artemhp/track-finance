@@ -1,0 +1,46 @@
+<app-header></app-header>
+
+<div id="context">
+
+  <div class="ui container">
+    <h4 class="ui horizontal divider header ">Manage Wallet</h4>
+    <div class="ui grid vertically padded tiny form">
+      <div class="row">
+        <div class="seven wide column middle aligned">
+          <div class="field">
+            <label>Wallet to manage:</label>
+            <div class="ui normal dropdown selection fluid">
+              <i class="dropdown icon"></i>
+              <div class="default text"></div>
+              <div class="menu">
+                <div class="item" *ngFor="let option of walletList">
+                  {{option['title']}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <form class="ui tiny form ui grid vertically padded" [formGroup]="shareWalletForm" (ngSubmit)="onSubmit(shareWallet)">
+      <div class="row">
+        <div class="ten wide column middle aligned">
+          <div class="ui search">
+            <div class="ui left icon input fluid">
+              <input class="prompt" type="text" placeholder="email" formControlName="email">
+              <i class="map envelope icon"></i>
+            </div>
+          </div>
+        </div>
+        <div class="six wide column">
+          <button [disabled]="!shareWalletForm.valid" class="small positive ui button fluid" type="submit" name="action">
+            Share
+          </button>
+        </div>
+      </div>
+    </form>
+
+
+    <h4 class="ui horizontal divider header">Manage Categories</h4>
+  </div>
+</div>

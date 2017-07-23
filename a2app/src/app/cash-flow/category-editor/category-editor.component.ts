@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { CashFlowFormService } from "../cash-flow-form.service";
+
+declare var $;
 
 @Component({
   selector: 'app-category-editor',
@@ -13,14 +15,17 @@ export class CategoryEditorComponent implements OnInit {
   private getCurrentCategoryValue = () => this.cashFlowFormService.cashFlowForm.get('category').value;
   private checkCurrentCategory = title => this.getCurrentCategoryValue() == title;
 
-  @Input() categoryForm;
-  constructor(private af: AngularFire, private cashFlowFormService: CashFlowFormService) { }
+  @Input() wallet;
+  constructor(
+    private afDB: AngularFireDatabase,
+    private cashFlowFormService: CashFlowFormService
+  ) { }
 
   private onSelectCategory = function () {
     $('.ui.basic.modal').modal('show');
-    const walletId = this.cashFlowFormService.cashFlowForm.get('walletId').value;
-    this.af.database.list('/wallets/' + walletId + '/category')
-      .subscribe(list => this.optionsCategoryList = list);
+    this.afDB.list('/wallets/' + this.wallet + '/category').subscribe(list => {
+      this.optionsCategoryList = list;
+    });
   }
 
   private submitCategory = function (title) {
@@ -32,6 +37,7 @@ export class CategoryEditorComponent implements OnInit {
 
 
   ngOnInit() {
+
     this.cashFlowFormService.cashFlowForm.get('category').valueChanges.subscribe(data => {
       this.categoryTitle = data;
       console.log(data);

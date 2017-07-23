@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { AngularFire, AuthProviders } from 'angularfire2';
 import { CategoryCreateService } from '../category-create/category-create.service';
+import { WalletInfoService } from '../wallet-info/wallet-info.service';
 import 'rxjs';
 
 @Injectable()
 export class GenerateWalletService {
 
   constructor(
-    private af: AngularFire,
-    private categoryCreateService: CategoryCreateService
+    private categoryCreateService: CategoryCreateService,
+    private walletInfoService: WalletInfoService
   ) { }
 
   private validateWallet = (wallet, title) => {
@@ -29,9 +29,9 @@ export class GenerateWalletService {
 
   private walletDefaultParameters = function (uid) {
     return {
-      'money': 0,
+      'amount': 0,
       'transactions': 0,
-      'currency': 'USD',
+      'currency': 'UAH',
       'users': {
         [uid]: true
       }
@@ -40,14 +40,17 @@ export class GenerateWalletService {
   };
 
   generateWallet = (uid, title) => {
-    const userWalletRef = this.af.database.list('/users/' + uid + '/wallets');
+
+    const userWalletRef = this.walletInfoService.userWalletRef(uid);
+    const walletRef = this.walletInfoService.walletRef(uid);
+
     return userWalletRef.take(1)
       // Check Wallet with this title is already exist.
       .map(w => this.validateWallet(w, title))
       // Add Wallet to root.users
       .flatMap(w => userWalletRef.push({ 'title': title }).then(w => w.getKey())) // "-KkEzhgeMJNOFORWHtO-"
       // Add Wallet to root.wallets
-      .flatMap(w => this.af.database.object('/wallets/' + w).set(this.walletDefaultParameters(uid)).then(() => w)) // "-KkEzhgeMJNOFORWHtO-"
+      .flatMap(w => walletRef.set(this.walletDefaultParameters(uid)).then(() => w)) // "-KkEzhgeMJNOFORWHtO-"
       // Set default categories to root.wallets['-KkEzhgeMJNOFORWHtO-']
       .flatMap(w => this.categoryCreateService.pushCategories(w, uid, this.cat)) // "-KkEzhgeMJNOFORWHtO-"      
   }

@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { CashFlow } from "../cash-flow.interface";
 import { StatusService } from "../../core/status.service";
 import { Observable } from "rxjs";
@@ -19,37 +19,49 @@ export class AddCashFlowComponent
 
   private cashFlowForm;
   private dateFormatter;
-
-  // private optionsCurrency: FirebaseListObservable<any>;
-  // private optionsFlowType: FirebaseListObservable<any>;
-  //private optionsCategory: FirebaseListObservable<any>;
   private wallet;
-
-
 
   private onSubmit = function ({ value, valid }) {
     if (valid) {
       let [year, month, day] = value.date.split('-');
       value.timestamp = + new Date(year, (+month - 1), day);
-      this.af.database.list('/items').push(value)
+
+      let wid = this.cashFlowForm.get('walletId').value;
+
+      const userWalletRef = this.af.database.list('/records/' + wid + '/wallets');
+
+      userWalletRef.take(1);
+
+      this.af.database.list('/records' + '/' + this.cashFlowForm.get('walletId').value).push(value)
         .then(_ => console.log('success'))
         .catch(err => console.log(err, 'You dont have access!'));
     }
   }
 
   constructor(
-    private af: AngularFire,
+    private afDB: AngularFireDatabase,
     private status: StatusService,
     private cashFlowFormService: CashFlowFormService
   ) { }
 
+  public currentWallet = {
+    'title': '',
+    'id': ''
+  };
+
+  public diagnostic() { return JSON.stringify(this.wallet); }
+
   ngOnInit() {
 
-    let walletObserv = this.af.database.list('/users/' + this.status['uid'] + '/wallets');
+    let walletObserv = this.afDB.list('/users/' + this.status['uid'] + '/wallets');
+
     walletObserv.subscribe(
       (el) => {
         this.wallet = el;
+        this.currentWallet.title = this.wallet[0]['title'];
+        this.currentWallet.id = this.wallet[0]['$key'];
         this.cashFlowFormService.changeCashFlowForm('wallet', this.wallet[0]['title'])
+
         setTimeout(() => $('.ui.dropdown').dropdown(), 0)
       });
 
@@ -57,7 +69,5 @@ export class AddCashFlowComponent
     this.cashFlowForm.get('wallet').valueChanges.subscribe(data => {
       this.cashFlowFormService.changeCashFlowForm('walletId', this.wallet[0]['$key']);
     });
-
-    //Observable.merge(this.optionsCurrency, this.optionsFlowType).subscribe(() => setTimeout(() => $('.ui.dropdown').dropdown(), 0));
   }
 }

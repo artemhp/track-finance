@@ -10,6 +10,7 @@ export class DashboardPageComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    $('.ui.dimmer.modals.page.transition.hidden').remove();
   }
 
 }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AngularFire, AuthProviders } from 'angularfire2';
 import { LoginService } from './login-page/login-page.service';
+import { AngularFireAuth } from 'angularfire2/auth';
 declare var $: any;
 
 @Component({
@@ -11,8 +11,9 @@ declare var $: any;
 })
 export class AppComponent {
 
-  constructor(public loginService: LoginService, public router: Router) {
-    this.loginService.userInfo.subscribe((el) => {
+  constructor(public loginService: LoginService, public router: Router, public afAuth: AngularFireAuth) {
+    this.afAuth.authState.subscribe((el) => {
+      loginService.userInfo(el);
       if (!el) {
         this.router.navigate(['/login']);
       } else if (el && el.uid) {
