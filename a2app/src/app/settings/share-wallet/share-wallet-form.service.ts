@@ -8,8 +8,7 @@ export class ShareWalletFormService {
 
   private shareWalletValues = {
     'email': '',
-    'wallet': '',
-    'alias': ''
+    'wallet': ''
   };
 
   public shareWalletForm = this.getShareWalletForm();
@@ -21,8 +20,7 @@ export class ShareWalletFormService {
   public getShareWalletForm() {
     return this.shareWalletForm = this.fb.group({
       'email': [this.shareWalletValues.email, Validators.required],
-      'wallet': '',
-      'alias': ''
+      'wallet': ''
     });
   }
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { DatePipe } from '@angular/common'
+import { DatePipe } from '@angular/common';
+declare var $: any;
 
 @Injectable()
 export class CashFlowFormService {
@@ -14,18 +15,36 @@ export class CashFlowFormService {
     this.cashFlowForm.controls[name].patchValue(value);
   }
 
+  public selectList(wallets) {
+    let wid = this.getWalletId(wallets);
+    this.changeCashFlowForm('wid', wid);
+    this.changeCashFlowForm('title', this.getWalletIdFromTitle(wallets, wid));
+    setTimeout(() => $('.ui.dropdown').dropdown(), 0)
+  }
+
+  public getWalletId(list) {
+    if (list.length)
+      return localStorage.getItem('wallet:id') || list[0]['$key'];
+  }
+
+  public getWalletIdFromTitle(list, wid) {
+    let wTitleArray = list.filter(w => w['$key'] == wid);
+    if (wTitleArray.length)
+      return wTitleArray[0]['title'];
+  }
+
   private cashFlowValues = {
     'type': 'income',
     'amount': '',
     'currency': 'UAH',
     'category': '',
     'location': '',
-    'wallet': '',
-    'walletId': '',
+    'title': '',
+    'wid': '',
     'date': this.datePipe.transform(new Date(), 'yyyy-MM-dd')
   };
 
-  public cashFlowForm = this.getCashFlowForm();
+  public cashFlowForm;
 
   public getCashFlowForm() {
     return this.cashFlowForm = this.fb.group({
@@ -34,8 +53,8 @@ export class CashFlowFormService {
       'currency': [this.cashFlowValues.currency, Validators.required],
       'category': ['', Validators.required],
       'location': '',
-      'wallet': '',
-      'walletId': '',
+      'title': '',
+      'wid': '',
       'date': this.cashFlowValues.date
     });
   }

@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { StatusService } from '../../core/status.service'
 
 @Injectable()
 export class CategoryCreateService {
 
-  constructor(private afDB: AngularFireDatabase, private statusService: StatusService) { }
+  constructor(
+    private afDB: AngularFireDatabase
+  ) { }
 
   pushCategories = function (wallet, uid, cat) {
     let categoryPromises = [];
@@ -13,7 +14,6 @@ export class CategoryCreateService {
       let obj = {
         'title': category['title'],
         'icon': category['img'],
-        'total': { 'items': 0, 'sum': 0 },
         'user': uid
       };
       categoryPromises.push(this.afDB.list('/wallets/' + wallet + '/category').push(obj));

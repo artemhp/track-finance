@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { StatusService } from '../core/status.service';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { GenerateWalletService } from "../wallet/wallet-create/generate-wallet.service";
+import { UserCreateService } from "../user/user-create.service";
 import 'rxjs/add/operator/do';
 import * as firebase from 'firebase';
 
@@ -17,6 +18,7 @@ export class LoginService {
     public afDB: AngularFireDatabase,
     public status: StatusService,
     public router: Router,
+    public userCreateService: UserCreateService,
     public createfirstwallet: GenerateWalletService
   ) { }
 
@@ -48,14 +50,22 @@ export class LoginService {
 
   userInfo = val => {
     if (val && val.uid) {
+
+      this.userCreateService.userCreate(val).subscribe((e) => {
+        console.log(e);
+      }, err => {
+        console.log(err.message);
+      });
+
       this.status.isLoggedIn = true;
       this.status.uid = val.uid;
-      this.createfirstwallet.generateWallet(this.status.uid, 'Personal')
-        .subscribe((e) => {
-          console.log(e);
-        }, err => {
-          console.log(err.message);
-        });
+      this.status.name = val.displayName;
+
+      this.createfirstwallet.generateWallet(this.status.uid, 'Personal', this.status.name).subscribe((e) => {
+        console.log(e);
+      }, err => {
+        console.log(err.message);
+      });
 
     }
   };

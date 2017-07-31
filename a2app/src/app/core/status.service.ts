@@ -4,9 +4,8 @@ import { Injectable } from '@angular/core';
 export class StatusService {
 
   constructor() { }
-
   isLoggedIn = false;
   redirectUrl: string;
+  name: string;
   uid: string;
-
 }

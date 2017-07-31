@@ -22,25 +22,22 @@ export class CategoryEditorComponent implements OnInit {
   ) { }
 
   private onSelectCategory = function () {
-    $('.ui.basic.modal').modal('show');
     this.afDB.list('/wallets/' + this.wallet + '/category').subscribe(list => {
       this.optionsCategoryList = list;
+      setTimeout(() => { $('.ui.basic.modal').modal('show') }, 0);
     });
   }
 
   private submitCategory = function (title) {
     this.cashFlowFormService.changeCashFlowForm('category', title);
-    $('.ui.basic.modal').modal('hide');
+    setTimeout(() => { $('.ui.basic.modal').modal('hide') }, 0);
   }
 
   private categoryTitle = '';
 
-
   ngOnInit() {
-
     this.cashFlowFormService.cashFlowForm.get('category').valueChanges.subscribe(data => {
       this.categoryTitle = data;
-      console.log(data);
     });
   }
 

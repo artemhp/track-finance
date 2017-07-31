@@ -1,11 +1,12 @@
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AngularFireDatabase } from 'angularfire2/database';
 import { CashFlow } from "../cash-flow.interface";
 import { StatusService } from "../../core/status.service";
 import { Observable } from "rxjs";
 import * as firebase from 'firebase';
 import { CashFlowFormService } from "../cash-flow-form.service";
+import { WalletInfoService } from '../../wallet/wallet-info/wallet-info.service';
+import { WalletRecordService } from "../../wallet/wallet-record/wallet-record.service";
 declare var $: any;
 
 @Component({
@@ -17,57 +18,41 @@ declare var $: any;
 export class AddCashFlowComponent
   implements OnInit {
 
-  private cashFlowForm;
-  private dateFormatter;
-  private wallet;
-
-  private onSubmit = function ({ value, valid }) {
-    if (valid) {
-      let [year, month, day] = value.date.split('-');
-      value.timestamp = + new Date(year, (+month - 1), day);
-
-      let wid = this.cashFlowForm.get('walletId').value;
-
-      const userWalletRef = this.af.database.list('/records/' + wid + '/wallets');
-
-      userWalletRef.take(1);
-
-      this.af.database.list('/records' + '/' + this.cashFlowForm.get('walletId').value).push(value)
-        .then(_ => console.log('success'))
-        .catch(err => console.log(err, 'You dont have access!'));
-    }
-  }
-
   constructor(
-    private afDB: AngularFireDatabase,
     private status: StatusService,
-    private cashFlowFormService: CashFlowFormService
+    private cashFlowFormService: CashFlowFormService,
+    private walletInfoService: WalletInfoService,
+    private walletRecordService: WalletRecordService
   ) { }
 
-  public currentWallet = {
-    'title': '',
-    'id': ''
-  };
+  private cashFlowForm = this.cashFlowFormService.getCashFlowForm();
+  private wallets;
 
-  public diagnostic() { return JSON.stringify(this.wallet); }
+  private addCashFlowRecord = function ({ value, valid }) {
+
+    if (valid) {
+      let wid = this.cashFlowForm.get('wid').value;
+      let data = this.covertDate(value);
+
+      this.walletRecordService.recordWallet(wid, data).subscribe(() => {
+        this.cashFlowForm.controls['amount'].patchValue('');
+      });
+    }
+
+  }
+
+  private covertDate = function (value) {
+    let transformedDate = value;
+    let [year, month, day] = transformedDate.date.split('-');
+    transformedDate.timestamp = + new Date(year, (+month - 1), day);
+    return transformedDate;
+  }
 
   ngOnInit() {
-
-    let walletObserv = this.afDB.list('/users/' + this.status['uid'] + '/wallets');
-
-    walletObserv.subscribe(
-      (el) => {
-        this.wallet = el;
-        this.currentWallet.title = this.wallet[0]['title'];
-        this.currentWallet.id = this.wallet[0]['$key'];
-        this.cashFlowFormService.changeCashFlowForm('wallet', this.wallet[0]['title'])
-
-        setTimeout(() => $('.ui.dropdown').dropdown(), 0)
-      });
-
-    this.cashFlowForm = this.cashFlowFormService.getCashFlowForm();
-    this.cashFlowForm.get('wallet').valueChanges.subscribe(data => {
-      this.cashFlowFormService.changeCashFlowForm('walletId', this.wallet[0]['$key']);
+    this.walletInfoService.walletInUserRef(this.status['uid']).subscribe(w => {
+      this.wallets = w;
+      this.cashFlowFormService.selectList(w);
     });
   }
+
 }

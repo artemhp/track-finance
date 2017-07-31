@@ -1,46 +1,28 @@
 <app-header></app-header>
-
 <div id="context">
-
   <div class="ui container">
     <h4 class="ui horizontal divider header ">Manage Wallet</h4>
-    <div class="ui grid vertically padded tiny form">
-      <div class="row">
-        <div class="seven wide column middle aligned">
-          <div class="field">
-            <label>Wallet to manage:</label>
-            <div class="ui normal dropdown selection fluid">
-              <i class="dropdown icon"></i>
-              <div class="default text"></div>
-              <div class="menu">
-                <div class="item" *ngFor="let option of walletList">
-                  {{option['title']}}
-                </div>
-              </div>
-            </div>
+    <div class="ui cards">
+      <div class="card" *ngFor="let wallet of wallets">
+        <div class="content">
+          <img class="right floated mini ui image" src="data:image/png;base64,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">
+          <div class="header">
+            {{wallet.title}}
           </div>
+          <div class="meta">
+            Owned by: Artem Deikun
+          </div>
+          <div class="description">
+            Balance: <strong>2000$</strong> <br /> Last Update: 10 July 2017
+          </div>
+        </div>
+        <div class="extra content">
+          <i class="folder open icon"></i> 121 Records
         </div>
       </div>
     </div>
-    <form class="ui tiny form ui grid vertically padded" [formGroup]="shareWalletForm" (ngSubmit)="onSubmit(shareWallet)">
-      <div class="row">
-        <div class="ten wide column middle aligned">
-          <div class="ui search">
-            <div class="ui left icon input fluid">
-              <input class="prompt" type="text" placeholder="email" formControlName="email">
-              <i class="map envelope icon"></i>
-            </div>
-          </div>
-        </div>
-        <div class="six wide column">
-          <button [disabled]="!shareWalletForm.valid" class="small positive ui button fluid" type="submit" name="action">
-            Share
-          </button>
-        </div>
-      </div>
-    </form>
 
-
+    <app-share-wallet></app-share-wallet>
     <h4 class="ui horizontal divider header">Manage Categories</h4>
   </div>
 </div>

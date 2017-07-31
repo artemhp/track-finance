@@ -1,4 +1,4 @@
-<form class="ui tiny form" [formGroup]="cashFlowForm" (ngSubmit)="onSubmit(cashFlowForm)">
+<form class="ui tiny form" [formGroup]="cashFlowForm" (ngSubmit)="addCashFlowRecord(cashFlowForm)">
   <div class="">
     <!--<a class="ui red ribbon label">Any Updates?</a>-->
     <div class="ui grid vertically padded">
@@ -10,7 +10,7 @@
           </div>
         </div>
         <div class="eight wide column">
-          <app-category-editor [wallet]="currentWallet.id"></app-category-editor>
+          <app-category-editor [wallet]="cashFlowForm.value.wid"></app-category-editor>
           <input type="hidden" formControlName="category">
         </div>
       </div>
@@ -18,13 +18,13 @@
         <div class="nine wide column">
           <div class="field">
             <div class="ui fluid right labeled input">
-              <input type="number" formControlName="amount" placeholder="Enter Amount">
+              <input type="number" formControlName="amount" placeholder="Amount">
               <div class="ui dropdown label">
-                <input type="hidden" name="wallet" formControlName="wallet">
-                <div class="default text">{{currentWallet.title}}</div>
+                <input type="hidden" name="title" formControlName="title">
+                <div class="default text"></div>
                 <i class="dropdown icon"></i>
                 <div class="menu">
-                  <div class="item" *ngFor="let option of wallet" (click)="cashFlowFormService.changeCashFlowForm('wallet', option['title'])">
+                  <div class="item" *ngFor="let option of wallets">
                     {{option['title']}}
                   </div>
                 </div>
@@ -45,7 +45,7 @@
         <div class="eight wide column middle aligned">
           <div class="ui search">
             <div class="ui left icon input fluid">
-              <input class="prompt" type="text" placeholder="Location">
+              <input class="prompt" formControlName="location" placeholder="Location">
               <i class="map outline icon"></i>
             </div>
           </div>

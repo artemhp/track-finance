@@ -25,14 +25,19 @@ import { CashFlowFormService } from './cash-flow/cash-flow-form.service';
 
 import { CategoryCreateService } from "./wallet/category-create/category-create.service";
 import { GenerateWalletService } from "./wallet/wallet-create/generate-wallet.service";
+import { UserCreateService } from "./user/user-create.service"
 import { WalletInfoService } from "./wallet/wallet-info/wallet-info.service";
+import { WalletRecordService } from "./wallet/wallet-record/wallet-record.service";
 
-import { ShareWalletFormService } from "./settings/share-wallet-form.service";
+import { WalletLinkService } from "./wallet/wallet-link/wallet-link.service";
+
+import { ShareWalletFormService } from "./settings/share-wallet/share-wallet-form.service";
 
 import { LoginService } from './login-page/login-page.service';
 import { LogoutDirective } from './logout/logout.directive';
 import { CategoryEditorComponent } from './cash-flow/category-editor/category-editor.component';
 import { SettingsPageComponent } from './settings-page/settings-page.component';
+import { ShareWalletComponent } from './settings/share-wallet/share-wallet.component';
 
 const appRoutes: Routes = [
   {
@@ -90,7 +95,8 @@ export const firebaseConfig = {
     LoginPageComponent,
     LogoutDirective,
     CategoryEditorComponent,
-    SettingsPageComponent
+    SettingsPageComponent,
+    ShareWalletComponent
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
@@ -112,7 +118,10 @@ export const firebaseConfig = {
     StatusService,
     CashFlowFormService,
     WalletInfoService,
-    ShareWalletFormService
+    ShareWalletFormService,
+    WalletRecordService,
+    UserCreateService,
+    WalletLinkService
   ],
   bootstrap: [AppComponent]
 })
