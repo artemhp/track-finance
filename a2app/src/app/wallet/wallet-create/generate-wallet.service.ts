@@ -46,7 +46,9 @@ export class GenerateWalletService {
       // Check Wallet with this title is already exist.
       .map(w => this.validateWallet(w, title))
       // Add Wallet to root.users
-      .flatMap(w => userWalletRef.push({ 'title': title }).then(w => w.getKey())) // "-KkEzhgeMJNOFORWHtO-"
+      .flatMap(w => userWalletRef.push({
+        'title': title
+      }).then(w => w.getKey())) // "-KkEzhgeMJNOFORWHtO-"
       // Add Wallet to root.wallets
       .flatMap(w => this.walletLinkService.addUser(w, uid, name).then(() => w)) // "-KkEzhgeMJNOFORWHtO-"
       // Set default categories to root.wallets['-KkEzhgeMJNOFORWHtO-']

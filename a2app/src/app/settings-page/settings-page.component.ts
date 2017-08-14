@@ -13,7 +13,7 @@ declare var $: any;
 })
 export class SettingsPageComponent implements OnInit {
 
-  private wallets = [];
+  private wallets;
 
   constructor(
     private afDB: AngularFireDatabase,
@@ -22,8 +22,9 @@ export class SettingsPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.walletInfoService.walletInUserRef(this.status['uid']).subscribe(w => {
+    this.walletInfoService.userWalletRef(this.status['uid']).subscribe(w => {
       this.wallets = w;
+      console.log(this.wallets);
     });
   }
 

@@ -9,9 +9,11 @@ export class WalletLinkService {
   ) { }
 
   addUser = function (wallet, uid, displayName) {
-    return this.afDB.list('/wallets/' + wallet + '/users').push({
+    return this.afDB.object('/wallets/' + wallet + '/users').set({
       [uid]: displayName
     });
   };
+
+
 
 }

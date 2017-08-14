@@ -38,11 +38,19 @@ import { LogoutDirective } from './logout/logout.directive';
 import { CategoryEditorComponent } from './cash-flow/category-editor/category-editor.component';
 import { SettingsPageComponent } from './settings-page/settings-page.component';
 import { ShareWalletComponent } from './settings/share-wallet/share-wallet.component';
+import { InfoWalletComponent } from './settings/info-wallet/info-wallet.component';
+import { SettingsPageDetailsComponent } from './settings-page-details/settings-page-details.component';
+import { NotificationComponent } from './notification/notification.component';
 
 const appRoutes: Routes = [
   {
     path: 'dashboard',
     component: DashboardPageComponent,
+    canActivate: [ApplicationGuard]
+  },
+  {
+    path: 'settings/:id',
+    component: SettingsPageDetailsComponent,
     canActivate: [ApplicationGuard]
   },
   {
@@ -96,7 +104,10 @@ export const firebaseConfig = {
     LogoutDirective,
     CategoryEditorComponent,
     SettingsPageComponent,
-    ShareWalletComponent
+    ShareWalletComponent,
+    InfoWalletComponent,
+    SettingsPageDetailsComponent,
+    NotificationComponent
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),

@@ -8,4 +8,5 @@ export class StatusService {
   redirectUrl: string;
   name: string;
   uid: string;
+  email: string;
 }

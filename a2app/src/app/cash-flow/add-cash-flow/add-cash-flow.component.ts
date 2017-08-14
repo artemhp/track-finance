@@ -49,7 +49,7 @@ export class AddCashFlowComponent
   }
 
   ngOnInit() {
-    this.walletInfoService.walletInUserRef(this.status['uid']).subscribe(w => {
+    this.walletInfoService.userWalletRef(this.status['uid']).subscribe(w => {
       this.wallets = w;
       this.cashFlowFormService.selectList(w);
     });

@@ -1,0 +1,20 @@
+<div class="ui container">
+  <div class="ui green icon message" *ngFor="let notification of notifications">
+    <i class="handshake icon"></i>
+    <div class="content">
+      <div class="">
+        {{notification.message}}
+      </div>
+      <div>
+        asdasd
+      </div>
+      <div>
+        <div class="ui buttons" style="margin-top: 10px;">
+          <button class="ui button">Ignore</button>
+          <div class="or"></div>
+          <button (click)="acceptWallet(notification.wid)" class="ui positive button">Accept</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

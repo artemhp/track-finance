@@ -1,23 +1,6 @@
-<form class="ui tiny form" [formGroup]="shareWalletForm" (ngSubmit)="onSubmit(shareWallet)">
+<form class="ui form" [formGroup]="shareWalletForm" (ngSubmit)="shareWallet(shareWalletForm)">
   <input type="hidden" formControlName="wallet">
   <div class="ui grid vertically padded">
-    <div class="row">
-      <div class="seven wide column middle aligned">
-        <div class="field">
-          <label>Wallet to manage:</label>
-          <div class="ui normal dropdown selection fluid">
-            <input type="hidden" name="wallet" formControlName="wallet">
-            <i class="dropdown icon"></i>
-            <div class="default text"></div>
-            <div class="menu">
-              <div class="item" *ngFor="let option of walletList">
-                {{option['title']}}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="row">
       <div class="ten wide column middle aligned">
         <div class="ui search">
@@ -28,7 +11,7 @@
         </div>
       </div>
       <div class="six wide column">
-        <button [disabled]="!shareWalletForm.valid" class="small positive ui button fluid" type="submit" name="action">
+        <button [disabled]="!shareWalletForm.valid" class="positive ui button fluid" type="submit" name="action">
           Share
         </button>
       </div>
