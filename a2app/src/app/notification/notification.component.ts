@@ -17,21 +17,23 @@ export class NotificationComponent implements OnInit {
   ) { }
 
   notifications = [];
-  acceptWallet = function (el) {
-    console.log(el);
-    this.walletInfoService.userWalletByIdRef(this.status['uid'], el)
-      .set({
-        title: 'Wallet' + Math.floor((Math.random() * 10) + 1)
-      })
+  acceptWallet = function (wallet, inboxId) {    
+    this.walletInfoService.userWalletByIdRef(this.status['uid'], wallet).set({title: 'Wallet' + Math.floor((Math.random() * 10) + 1)});
+    this.afDB.object('/users/' + this.status['uid'] + '/inbox/'+inboxId).update({ status: 'done' });
+    this.afDB.object('/wallets/' + wallet + '/users').update({
+      [this.status['uid']]: this.status['name']
+    })
+
   }
 
   ngOnInit() {
-
-    const items = this.afDB.list('/inbox/' + this.status['email'].replace(".", "~"));
-    items.subscribe(el => {
-      this.notifications = el;
+    const items = this.afDB.list('/users/' + this.status['uid'] + '/inbox', {
+      query: { 
+        orderByChild: 'status', 
+        equalTo: 'pending' 
+      }
     });
-
+    items.subscribe(el => this.notifications = el);
   }
 
 }

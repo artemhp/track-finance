@@ -22,18 +22,20 @@ export class ShareWalletComponent implements OnInit {
 
     if (valid) {
 
-      const items = this.afDB.list('/inbox/' + value['email'].replace(".", "~"));
-      console.log(this.status);
-      debugger;
+      const items = this.afDB.list('/users/' + value['uid'] + '/inbox');    
+
       items.push({
         'message': 'You have been invited to use shared wallet with ' + this.status['name'],
         'wid': value.wallet,
-        'status': 'pending',
-        'wallet': value.wallet,
+        'status': 'pending',        
         'author': this.status['name']
       });
 
-      this.shareWalletForm.controls['email'].patchValue('');
+      
+
+      this.afDB.object('/wallets/'+value.wallet+'/users/'+value['uid']).set(true);          
+
+      this.shareWalletForm.controls['uid'].patchValue('');
 
     }
 

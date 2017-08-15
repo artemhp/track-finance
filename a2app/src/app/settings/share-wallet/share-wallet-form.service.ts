@@ -19,7 +19,7 @@ export class ShareWalletFormService {
 
   public getShareWalletForm() {
     return this.shareWalletForm = this.fb.group({
-      'email': [this.shareWalletValues.email, Validators.required],
+      'uid': ['', Validators.required],
       'wallet': ''
     });
   }

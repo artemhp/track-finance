@@ -14,7 +14,7 @@ export class UserCreateService {
     const userRef = this.walletInfoService.userRef(val.uid);
     return Observable.fromPromise(userRef.update({
       email: val.email,
-      name: val.displayName
+      name: val.displayName      
     }));
   }
 

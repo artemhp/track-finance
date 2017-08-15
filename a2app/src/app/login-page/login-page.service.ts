@@ -62,7 +62,7 @@ export class LoginService {
       this.status.email = val.email;
       this.status.name = val.displayName;
 
-      this.createfirstwallet.generateWallet(this.status.uid, 'One More', this.status.name).subscribe((e) => {
+      this.createfirstwallet.generateWallet(this.status.uid, 'First Wallet', this.status.name).subscribe((e) => {
         console.log(e);
       }, err => {
         console.log(err.message);

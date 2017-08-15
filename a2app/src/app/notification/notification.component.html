@@ -4,15 +4,12 @@
     <div class="content">
       <div class="">
         {{notification.message}}
-      </div>
-      <div>
-        asdasd
-      </div>
+      </div>      
       <div>
         <div class="ui buttons" style="margin-top: 10px;">
           <button class="ui button">Ignore</button>
           <div class="or"></div>
-          <button (click)="acceptWallet(notification.wid)" class="ui positive button">Accept</button>
+          <button (click)="acceptWallet(notification.wid, notification.$key)" class="ui positive button">Accept</button>
         </div>
       </div>
     </div>

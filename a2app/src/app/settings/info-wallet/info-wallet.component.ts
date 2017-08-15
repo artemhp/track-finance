@@ -19,15 +19,15 @@ export class InfoWalletComponent implements OnInit {
   ngOnInit() {
     let wid = this.wallet['$key'];
 
-    this.walletInfoService.walletRecordStatsRef(wid).subscribe(el => {
-      console.log(el);
+    this.walletInfoService.walletRecordStatsRef(wid).subscribe(el => {      
       this.info['date'] = el['date'];
       this.info['balance'] = el['balance'];
       this.info['total'] = el['total'];
     });
 
-    this.walletInfoService.walletRecordUsersRef(wid).subscribe(el => {
-      this.info['users'] = el.map(el => el.name).join(",");
+    this.walletInfoService.walletRecordUsersRef(wid).subscribe(el => {      
+      let users = el.map(el => el.$value).filter(el => el !== this.status['name']);
+      this.info['users'] = users.join(", ");
     });
 
     this.walletInfoService.userWalletByIdRef(this.status['uid'], wid).subscribe(el => {

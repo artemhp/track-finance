@@ -3,8 +3,8 @@
   <div class="header">
     {{info.title}}
   </div>
-  <div class="meta">
-    Owned by: {{info.users}}
+  <div class="meta" *ngIf="info.users">
+    Shared with: {{info.users}}
   </div>
   <div class="description">
     <div *ngIf="info.balance">Balance: <strong>{{info.balance}}$</strong></div>
@@ -13,7 +13,7 @@
 </div>
 <div class="extra content">
   <i class="folder open icon"></i> {{info.total || 'No'}} records
-  <div class="right floated">
+  <a class="right floated" routerLink="/settings/{{wallet['$key']}}">
     <i class="pencil icon"></i> Edit
-  </div>
+  </a>
 </div>
