@@ -41,6 +41,7 @@ import { ShareWalletComponent } from './settings/share-wallet/share-wallet.compo
 import { InfoWalletComponent } from './settings/info-wallet/info-wallet.component';
 import { SettingsPageDetailsComponent } from './settings-page-details/settings-page-details.component';
 import { NotificationComponent } from './notification/notification.component';
+import { CategoriesListComponent } from './categories-list/categories-list.component';
 
 const appRoutes: Routes = [
   {
@@ -107,7 +108,8 @@ export const firebaseConfig = {
     ShareWalletComponent,
     InfoWalletComponent,
     SettingsPageDetailsComponent,
-    NotificationComponent
+    NotificationComponent,
+    CategoriesListComponent
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),

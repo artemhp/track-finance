@@ -1,16 +1,11 @@
-<button class="ui button fluid tiny" type="button" (click)="onSelectCategory()">
+<button class="ui button fluid tiny" type="button" (click)="openCategoryList()">
   <span *ngIf="!categoryTitle">Select Category</span>  
   <span *ngIf="categoryTitle">{{categoryTitle}}</span>
 </button>
 <div class="ui basic modal">
   <div class="content">
-    <div class="ui middle aligned selection list inverted">
-      <div class="item" *ngFor="let category of optionsCategoryList" [ngClass]="{'active': checkCurrentCategory(category['title'])}" (click)="submitCategory(category['title'])">
-        <i class="large middle aligned icon" [ngClass]="category['img'] || 'book'"></i>
-        <div class="content">
-          <div class="header">{{category['title']}}</div>
-        </div>
-      </div>
+    <div class="ui middle aligned selection inverted">
+      <app-categories-list class="ui list inverted" [wallet]="wallet" (selectedCategory)="onSelectedCategory($event)"></app-categories-list>
     </div>
   </div>
   <div class="actions">

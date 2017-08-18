@@ -1,5 +1,5 @@
+import { debuglog } from 'util';
 import { Component, OnInit, Input } from '@angular/core';
-import { AngularFireDatabase } from 'angularfire2/database';
 import { CashFlowFormService } from "../cash-flow-form.service";
 
 declare var $;
@@ -14,23 +14,19 @@ export class CategoryEditorComponent implements OnInit {
   private optionsCategoryList: any;
   private getCurrentCategoryValue = () => this.cashFlowFormService.cashFlowForm.get('category').value;
   private checkCurrentCategory = title => this.getCurrentCategoryValue() == title;
+  private selectedCategory = 'test';
 
   @Input() wallet;
   constructor(
-    private afDB: AngularFireDatabase,
     private cashFlowFormService: CashFlowFormService
   ) { }
 
-  private onSelectCategory = function () {
-    this.afDB.list('/wallets/' + this.wallet + '/category').subscribe(list => {
-      this.optionsCategoryList = list;
-      setTimeout(() => { $('.ui.basic.modal').modal('show') }, 0);
-    });
-  }
-
-  private submitCategory = function (title) {
+  private onSelectedCategory(title) {
     this.cashFlowFormService.changeCashFlowForm('category', title);
     setTimeout(() => { $('.ui.basic.modal').modal('hide') }, 0);
+  }
+  private openCategoryList = function () {
+    setTimeout(() => { $('.ui.basic.modal').modal('show') }, 0);
   }
 
   private categoryTitle = '';
