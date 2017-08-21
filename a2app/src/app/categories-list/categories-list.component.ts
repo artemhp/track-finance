@@ -9,7 +9,8 @@ import { AngularFireDatabase } from 'angularfire2/database';
 export class CategoriesListComponent implements OnInit, OnChanges {
 
   @Input() wallet;
-  @Output() selectedCategory = new EventEmitter();
+  @Output() onSelectCategory = new EventEmitter();
+  @Output() onListLoad = new EventEmitter();
 
   private optionsCategoryList;
 
@@ -21,12 +22,13 @@ export class CategoriesListComponent implements OnInit, OnChanges {
     if (this.wallet) {
       this.afDB.list('/wallets/' + this.wallet + '/category').subscribe(list => {
         this.optionsCategoryList = list;
+        this.onListLoad.emit();
       });
     }
   }
 
   private selectCategory(category) {
-    this.selectedCategory.emit(category);
+    this.onSelectCategory.emit(category);
   }
 
   ngOnInit() {

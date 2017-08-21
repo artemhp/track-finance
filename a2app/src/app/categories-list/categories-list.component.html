@@ -1,4 +1,4 @@
-<div class="item" *ngFor="let category of optionsCategoryList" [ngClass]="{'active': false}" (click)="selectCategory(category['title'])">
+<div class="item" *ngFor="let category of optionsCategoryList" [ngClass]="{'active': false}" (click)="selectCategory(category)">
   <i class="large middle aligned icon" [ngClass]="category['img'] || 'book'"></i>
   <div class="content">
     <div class="header">{{category['title']}}</div>

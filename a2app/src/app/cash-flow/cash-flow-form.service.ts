@@ -52,6 +52,7 @@ export class CashFlowFormService {
       'amount': [this.cashFlowValues.amount, Validators.required],
       'currency': [this.cashFlowValues.currency, Validators.required],
       'category': ['', Validators.required],
+      'categoryId': ['', Validators.required],
       'location': '',
       'title': '',
       'wid': '',
