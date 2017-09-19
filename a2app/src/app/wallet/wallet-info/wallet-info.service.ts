@@ -26,10 +26,12 @@ export class WalletInfoService {
 
   categoryStatsRef = (wid, cid) => this.afDB.object('/wallets/' + wid + '/category/' + cid + '/stats');
 
-  categoryStatisticIncomeDailyRef = (wid, cid, day) => this.afDB.object('/wallets/' + wid + '/category/' + cid + '/statistic/daily/income' + day);
-  categoryStatisticSpendingDailyRef = (wid, cid, day) => this.afDB.object('/wallets/' + wid + '/category/' + cid + '/statistic/daily/spending' + day);
+  categoryStatisticIncomeDailyRef = (wid, cid, day) => this.afDB.object('/wallets/' + wid + '/category/' + cid + '/statistic/daily/income/' + day);
+  categoryStatisticSpendingDailyRef = (wid, cid, day) => this.afDB.object('/wallets/' + wid + '/category/' + cid + '/statistic/daily/spending/' + day);
 
-  categoryStatisticIncomeMonthlyRef = (wid, cid, month) => this.afDB.object('/wallets/' + wid + '/category/' + cid + '/statistic/monthly/income' + month);
-  categoryStatisticSpendingMonthlyRef = (wid, cid, month) => this.afDB.object('/wallets/' + wid + '/category/' + cid + '/statistic/monthly/spending' + month);
+  categoryStatisticIncomeMonthlyRef = (wid, cid, month) => this.afDB.object('/wallets/' + wid + '/category/' + cid + '/statistic/monthly/income/' + month);
+  categoryStatisticSpendingMonthlyRef = (wid, cid, month) => this.afDB.object('/wallets/' + wid + '/category/' + cid + '/statistic/monthly/spending/' + month);
+
+  categoryList = (wid) => this.afDB.list('/wallets/' + wid + '/category');
 
 }

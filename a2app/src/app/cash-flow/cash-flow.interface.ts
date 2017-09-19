@@ -3,5 +3,6 @@ export interface CashFlow {
   amount: number,
   currency: string,
   category: string,
-  date: string
+  date: string,
+  note: string
 }

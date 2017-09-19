@@ -20,7 +20,7 @@ export class ApplicationGuard implements CanActivate {
       return true;
     }
     this.status.redirectUrl = url;
-    this.router.navigate(['/login']);
+    this.router.navigate(['/loading']);
     return false;
   }
 }

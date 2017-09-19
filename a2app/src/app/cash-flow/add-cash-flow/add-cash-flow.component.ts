@@ -27,18 +27,29 @@ export class AddCashFlowComponent
 
   private cashFlowForm = this.cashFlowFormService.getCashFlowForm();
   private wallets;
+  private showNotes = false;
+  private showLoading = false;
 
   private addCashFlowRecord = function ({ value, valid }) {
 
     if (valid) {
       let wid = this.cashFlowForm.get('wid').value;
       let data = this.covertDate(value);
+      this.showLoading = true;
 
       this.walletRecordService.recordWallet(wid, data).subscribe(() => {
         this.cashFlowForm.controls['amount'].patchValue('');
+        this.cashFlowForm.controls['location'].patchValue('');
+        this.cashFlowForm.controls['note'].patchValue('');
+        this.showNotes = false;
+        this.showLoading = false;
       });
     }
 
+  }
+
+  private toggleNotes = function () {
+    this.showNotes = !this.showNotes;
   }
 
   private covertDate = function (value) {

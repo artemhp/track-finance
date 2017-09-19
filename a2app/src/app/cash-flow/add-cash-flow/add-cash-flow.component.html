@@ -1,7 +1,10 @@
 <form class="ui tiny form" [formGroup]="cashFlowForm" (ngSubmit)="addCashFlowRecord(cashFlowForm)">
+  <div class="ui active inverted dimmer" *ngIf="showLoading">
+    <div class="ui loader"></div>
+  </div>
   <div class="">
     <!--<a class="ui red ribbon label">Any Updates?</a>-->
-    <div class="ui grid vertically padded">
+    <div class="ui grid vertically padded z-padding-row">
       <div class="row">
         <div class="eight wide column">
           <div class="ui fluid buttons tiny">
@@ -14,7 +17,7 @@
           <input type="hidden" formControlName="category">
         </div>
       </div>
-      <div class="row z-padding-row">
+      <div class="row">
         <div class="nine wide column">
           <div class="field">
             <div class="ui fluid right labeled input">
@@ -41,6 +44,13 @@
           </div>
         </div>
       </div>
+      <div class="row" *ngIf="showNotes">
+        <div class="sixtenn wide column middle aligned">
+          <div class="ui input fluid">
+            <input type="text" formControlName="note" placeholder="Note">
+          </div>
+        </div>
+      </div>
       <div class="row">
         <div class="eight wide column middle aligned">
           <div class="ui search">
@@ -50,7 +60,15 @@
             </div>
           </div>
         </div>
-        <div class="eight wide column">
+        <div class="two wide column z-disable-padding center aligned">
+          <button class="ui icon button circular" (click)="toggleNotes()" *ngIf="!showNotes">
+              <i class="sticky note outline icon"></i>
+          </button>
+          <button class="ui icon orange button circular" (click)="toggleNotes()" *ngIf="showNotes">
+              <i class="sticky note outline icon"></i>
+          </button>
+        </div>
+        <div class="six wide column">
           <button [disabled]="!cashFlowForm.valid" class="positive ui button fluid" type="submit" name="action">
             Confirm
           </button>

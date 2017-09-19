@@ -1,0 +1,30 @@
+<div class="ui active inverted dimmer" *ngIf="loading">
+  <div class="ui text loader">Loading</div>
+</div>
+<div class="ui feed">
+  <!-- Event -->
+  <div *ngFor="let item of recordsList | async">
+    <div>
+      <div class="label">
+        <i [className]="item.category.icon + ' inverted orange shopping icon'"></i>
+      </div>
+      <div class="content">
+        <div class="summary">
+          <span>{{item.category.title}}</span>
+          <span class="ui red basic label ft-amount">{{item.amount}} <small>{{item.currency}}</small></span>
+          <div class="date">
+            3 days ago
+          </div>
+        </div>
+        <div class="extra text" *ngIf="item.note">
+          {{item.note}}
+        </div>
+        <div class="meta" *ngIf="item.location">
+          <a class="">
+                <i class="marker icon"></i> {{item.location}}
+              </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

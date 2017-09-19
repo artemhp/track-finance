@@ -12,6 +12,7 @@ declare var $: any;
 export class AppComponent {
 
   constructor(public loginService: LoginService, public router: Router, public afAuth: AngularFireAuth) {
+    this.router.navigate(['/loading']);
     this.afAuth.authState.subscribe((el) => {
       loginService.userInfo(el);
       if (!el) {

@@ -41,6 +41,7 @@ export class CashFlowFormService {
     'location': '',
     'title': '',
     'wid': '',
+    'note': '',
     'date': this.datePipe.transform(new Date(), 'yyyy-MM-dd')
   };
 
@@ -56,6 +57,7 @@ export class CashFlowFormService {
       'location': '',
       'title': '',
       'wid': '',
+      'note': '',
       'date': this.cashFlowValues.date
     });
   }

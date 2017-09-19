@@ -39,8 +39,7 @@ export class WalletRecordService {
       else { return last; }
     }
 
-    return Observable.fromPromise(
-      walletRef.push(data))
+    return Observable.fromPromise(walletRef.push(data))
       .flatMap(w => {
         return walletRecordStatsRef.take(1).flatMap(el => {
           return walletRecordStatsRef.set({

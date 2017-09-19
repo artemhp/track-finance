@@ -32,6 +32,7 @@ import { WalletRecordService } from "./wallet/wallet-record/wallet-record.servic
 import { WalletLinkService } from "./wallet/wallet-link/wallet-link.service";
 
 import { ShareWalletFormService } from "./settings/share-wallet/share-wallet-form.service";
+import { RecordsListService } from './records-list/records-list.service';
 
 import { LoginService } from './login-page/login-page.service';
 import { LogoutDirective } from './logout/logout.directive';
@@ -42,6 +43,11 @@ import { InfoWalletComponent } from './settings/info-wallet/info-wallet.componen
 import { SettingsPageDetailsComponent } from './settings-page-details/settings-page-details.component';
 import { NotificationComponent } from './notification/notification.component';
 import { CategoriesListComponent } from './categories-list/categories-list.component';
+import { RecordsListComponent } from './records-list/records-list.component';
+import { CategoryComponent } from './category/category.component';
+import { LoadingPageComponent } from './loading-page/loading-page.component';
+import { RecordItemComponent } from './record-item/record-item.component';
+
 
 const appRoutes: Routes = [
   {
@@ -58,6 +64,10 @@ const appRoutes: Routes = [
     path: 'settings',
     component: SettingsPageComponent,
     canActivate: [ApplicationGuard]
+  },
+  {
+    path: 'loading',
+    component: LoadingPageComponent
   },
   {
     path: 'login',
@@ -109,7 +119,11 @@ export const firebaseConfig = {
     InfoWalletComponent,
     SettingsPageDetailsComponent,
     NotificationComponent,
-    CategoriesListComponent
+    CategoriesListComponent,
+    RecordsListComponent,
+    CategoryComponent,
+    LoadingPageComponent,
+    RecordItemComponent
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
@@ -134,7 +148,8 @@ export const firebaseConfig = {
     ShareWalletFormService,
     WalletRecordService,
     UserCreateService,
-    WalletLinkService
+    WalletLinkService,
+    RecordsListService
   ],
   bootstrap: [AppComponent]
 })
