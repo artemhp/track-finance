@@ -11,7 +11,7 @@ export class WalletRecordService {
   ) { }
 
   recordWallet = (wid, data) => {
-    const walletRef = this.walletInfoService.walletRecordsRef(wid);
+    const walletRecordsRef = this.walletInfoService.walletRecordsRef(wid);
     const walletRecordStatsRef = this.walletInfoService.walletRecordStatsRef(wid);
 
     let covertDate = function (value) {
@@ -39,7 +39,8 @@ export class WalletRecordService {
       else { return last; }
     }
 
-    return Observable.fromPromise(walletRef.push(data))
+    return Observable.fromPromise(walletRecordsRef.push(data))
+      // Stats. General Balance.
       .flatMap(w => {
         return walletRecordStatsRef.take(1).flatMap(el => {
           return walletRecordStatsRef.set({
@@ -49,6 +50,7 @@ export class WalletRecordService {
           })
         }).map(el => w);
       })
+      // General Statistics. Daily and Monthly
       .flatMap(el => {
 
         let observeDaily;
@@ -59,22 +61,23 @@ export class WalletRecordService {
           let incomeDailyRef = this.walletInfoService.walletRecordStatisticIncomeDailyRef(wid, thisDayTimestamp);
           let incomeMonthlyRef = this.walletInfoService.walletRecordStatisticIncomeMonthlyRef(wid, thisMonthTimestamp);
 
+          // Daily
           observeDaily = incomeDailyRef.take(1).flatMap(el => incomeDailyRef.set((el.$value || 0) + data.amount));
+          // Monthly
           observeMonthly = incomeMonthlyRef.take(1).flatMap(el => incomeMonthlyRef.set((el.$value || 0) + data.amount));
-
         } else {
 
           let spendingDailyRef = this.walletInfoService.walletRecordStatisticIncomeDailyRef(wid, thisDayTimestamp);
           let spendingMonthlyRef = this.walletInfoService.walletRecordStatisticIncomeMonthlyRef(wid, thisMonthTimestamp);
 
+          // Daily
           observeDaily = spendingDailyRef.take(1).flatMap(el => spendingDailyRef.set((el.$value || 0) + data.amount));
+          // Monthly
           observeMonthly = spendingMonthlyRef.take(1).flatMap(el => spendingMonthlyRef.set((el.$value || 0) + data.amount));
-
         }
-
         return Observable.merge(observeDaily, observeMonthly);
-
       })
+      // Category Statistics. Daily and Monthly
       .flatMap(el => {
 
         let cid = data.categoryId;
