@@ -3,8 +3,8 @@
 </div>
 <div class="ui feed">
   <!-- Event -->
-  <div *ngFor="let item of recordsList | async">
-    <div>
+  <div class="event" *ngFor="let item of recordsList | async">
+    
       <div class="label">
         <i [className]="item.category.icon + ' inverted orange shopping icon'"></i>
       </div>
@@ -25,6 +25,6 @@
               </a>
         </div>
       </div>
-    </div>
+    
   </div>
 </div>

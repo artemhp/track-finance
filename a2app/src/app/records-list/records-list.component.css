@@ -1,6 +1,7 @@
 .event > .label {    
     display: flex;
     align-items: center;
+    width: auto;
 }
 
 .ft-amount {
