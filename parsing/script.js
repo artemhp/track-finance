@@ -1,13 +1,16 @@
-var firebase = require('firebase');
-var fs = require('fs');
-var dateFormat = require('dateformat');
-var param = process.argv;
-// var path = param[param.length-1];
-var path = __dirname + '/wallet.txt'
-var wallet = '-Ks8ImbZno4lzuN6ixcg';
-var user = 'vtAGQEZMv4fHqhXq0bt8WEZ0rmG2';
+const firebase = require('firebase');
+const wallet = require('./wallet.js');
 
-var config = {
+// const fs = require('fs');
+const dateFormat = require('dateformat');
+// const param = process.argv;
+// const path = param[param.length-1];
+// const path = __dirname + '/wallet.txt'
+
+const wid = '-KuYqOQvEX-BzSXyyTuC';
+const user = 'vtAGQEZMv4fHqhXq0bt8WEZ0rmG2';
+
+const config = {
     apiKey: "AIzaSyBs2rH4kaW2qQU8hAPkLm669zOQNkj5V0I",
     authDomain: "finance-tracker-d9c2f.firebaseapp.com",
     databaseURL: "https://finance-tracker-d9c2f.firebaseio.com",
@@ -16,16 +19,16 @@ var config = {
     messagingSenderId: "242139475776"
 };
 
-var app = firebase.initializeApp(config);
+const app = firebase.initializeApp(config);
 
-var db = firebase.database();
-var refRecords = db.ref("records/" + wallet);
-var refCaregories = db.ref("wallets/" + wallet + '/category');
+const db = firebase.database();
+const refRecords = db.ref("records/" + wid);
+const refCaregories = db.ref("wallets/" + wid + '/category');
 
-var refWalletStatDaily = db.ref("wallets/" + wallet + '/statistic/daily');
-var refWalletStatMonthly = db.ref("wallets/" + wallet + '/statistic/monthly');
+const refWalletStatDaily = db.ref("wallets/" + wid + '/statistic/daily');
+const refWalletStatMonthly = db.ref("wallets/" + wid + '/statistic/monthly');
 
-var refWalletStat = db.ref("wallets/" + wallet + '/stats');
+const refWalletStat = db.ref("wallets/" + wid + '/stats');
 
 let mappedCategories = {};
 
@@ -34,29 +37,13 @@ refCaregories.once("value").then(snap => {
     for (let catKey in categories) {
         mappedCategories[categories[catKey]['title']] = catKey;
     }
-    readFromFile();
+    wallet(__dirname + '/wallet.txt').then(str => parse(str));
 });
 
-
-function setBalance(amount, type) {
-    if (type == 'income') {
-        return Math.abs(amount);
-    } else {
-        return Math.abs(amount) * -1.;
-    }
-}
-
-function setTimeStamp(current, last) {
-    if (!last) return current;
-    if (current > last) { return current; }
-    else { return last; }
-}
-
 function getCategory(line) {
-    var data = line.split(';');
-    let categoryName = data[1];
+    const categoryName = line.category;
     return {
-        'name': data[1],
+        'name': line.category,
         'id': mappedCategories[categoryName]
     };
 }
@@ -75,15 +62,15 @@ function getCurrentDate(date) {
         month: thisMonthTimestamp,
         day: thisDayTimestamp
     }
+
 }
 
 function setStats(line) {
-    var data = line.split(';');
-    currentDate = getCurrentDate(data[9]);
+    currentDate = getCurrentDate(line.date);
 
     function setSatistic(current) {
-        let amount = Math.abs(data[3]);
-        if (data[5].toLowerCase() == 'expenses') {
+        const amount = Math.abs(line.amount);
+        if (line.type.toLowerCase() == 'expenses') {
             return current - amount;
         } else {
             return current + amount;
@@ -92,7 +79,7 @@ function setStats(line) {
 
     let balance = refWalletStat.child('balance').transaction(setSatistic);
     let date = refWalletStat.child('date').transaction(() => {
-        let now = new Date(data[9]);
+        let now = new Date(line.date);
         return +now;
     });
     let total = refWalletStat.child('total').transaction(current => {
@@ -103,39 +90,35 @@ function setStats(line) {
 }
 
 function setCategoryStatistics(line) {
-    var data = line.split(';');
-    let currentDate = getCurrentDate(data[9]);
-
-    let daily = refCaregories.child(mappedCategories[data[1]]).child('statistic/daily').child(data[5].toLowerCase()).child(currentDate.day);
-    let monthly = refCaregories.child(mappedCategories[data[1]]).child('statistic/monthly').child(data[5].toLowerCase()).child(currentDate.month);
+    const currentDate = getCurrentDate(line.date);
+    const daily = refCaregories.child(mappedCategories[line.category]).child('statistic/daily').child(line.type.toLowerCase()).child(currentDate.day);
+    const monthly = refCaregories.child(mappedCategories[line.category]).child('statistic/monthly').child(line.type.toLowerCase()).child(currentDate.month);
 
     function setSatistic(current) {
-        let amount = Math.abs(data[3]);
+        const amount = Math.abs(line.amount);
         return current + amount;
     }
 
-    let dailyPromise = daily.transaction(setSatistic);
-    let monthlyPromise = monthly.transaction(setSatistic);
+    const dailyPromise = daily.transaction(setSatistic);
+    const monthlyPromise = monthly.transaction(setSatistic);
 
     return Promise.all([dailyPromise, monthlyPromise])
 }
 
 function setStatistics(line) {
 
-    var data = line.split(';');
+    currentDate = getCurrentDate(line.date);
 
-    currentDate = getCurrentDate(data[9]);
-
-    let daily = refWalletStatDaily.child(data[5].toLowerCase()).child(currentDate.day);
-    let monthly = refWalletStatMonthly.child(data[5].toLowerCase()).child(currentDate.month);
+    const daily = refWalletStatDaily.child(line.type.toLowerCase()).child(currentDate.day);
+    const monthly = refWalletStatMonthly.child(line.type.toLowerCase()).child(currentDate.month);
 
     function setSatistic(current) {
-        let amount = Math.abs(data[3]);
+        const amount = Math.abs(line.amount);
         return current + amount;
     }
 
-    let dailyPromise = daily.transaction(setSatistic);
-    let monthlyPromise = monthly.transaction(setSatistic);
+    const dailyPromise = daily.transaction(setSatistic);
+    const monthlyPromise = monthly.transaction(setSatistic);
 
     return Promise.all([dailyPromise, monthlyPromise]);
 
@@ -143,25 +126,24 @@ function setStatistics(line) {
 
 function getObj(line) {
 
-    var data = line.split(';');
-    let categoryName = data[1];
+    let categoryName = line.category;
 
-    var date = new Date(data[9]);
+    var date = new Date(line.date);
     var dateTimeStamp = date.getTime();
     var formattedDate = dateFormat(date, "yyyy-mm-dd");
 
     var obj = {
-        amount: Math.abs(data[3]),
+        amount: Math.abs(line.amount),
         category: categoryName,
         categoryId: mappedCategories[categoryName],
-        currency: data[2],
+        currency: line.currency,
         date: formattedDate,
-        location: data[8],
+        location: line.note,
         note: '',
         timestamp: dateTimeStamp,
         title: "First Wallet",
-        type: data[5].toLowerCase(),
-        wid: wallet
+        type: line.type.toLowerCase(),
+        wid: wid
     }
 
     return obj;
@@ -172,60 +154,57 @@ function writeRecord(line) {
     return newRecord.set(getObj(line));
 }
 
-function readFromFile() {
-    fs.readFile(path, 'utf8', function (err, str) {
+function parse(res) {
 
-        var reg = /(Готівка);([^;]*);([^;]*);([^;]*);([^;]*);([^;]*);([^;]*);([^;]*);([^;]*);([^;]*);([^;]*);([^;]*);([^;]*);([^;]*);([^;]*);/ig;
-        var res = str.match(reg);
+    let arrayCategoryPromises = [];
 
-        let arrayCategoryPromises = [];
+    res.forEach(line => {
+        let category = getCategory(line);
 
-        res.forEach((line) => {
-            let category = getCategory(line);
-            if (!category.id) {
-                let newCategory = refCaregories.push();
-                let setCategory = newCategory.set({
-                    'icon': 'rocket',
-                    'title': category.name,
-                    'user': user
-                });
-                arrayCategoryPromises.push(setCategory);
-                mappedCategories[category.name] = newCategory;
-            }
-        });
-
-        let allCategoryPromise = Promise.all(arrayCategoryPromises).then(_ => {
-            console.log('Categories!!!');
-            let promiseStatisticArray = [];
-            res.forEach(line => {
-                promiseStatisticArray.push(setStatistics(line));
-            })
-
-            Promise.all(promiseStatisticArray).then(_ => {
-                console.log('Statistic!!!');
-                let statsPromise = [];
-                res.forEach(line => {
-                    statsPromise.push(setStats(line));
-                })
-                Promise.all(statsPromise).then(_ => {
-                    console.log('Stats!!!');
-                    let promiseStatisticCategoryArray = [];
-                    res.forEach(line => {
-                        promiseStatisticCategoryArray.push(setCategoryStatistics(line));
-                    })
-                    Promise.all(promiseStatisticCategoryArray).then(_ => {
-                        console.log('Stat Category!!!');
-                        let promiseRecordsArray = [];
-                        res.forEach(line => {
-                            promiseRecordsArray.push(writeRecord(line));
-                        })
-                        Promise.all(promiseRecordsArray).then(_ => {
-                            console.log('Records Done !!!')
-                        })
-                    })
-                });
+        if (!category.id) {
+            let newCategory = refCaregories.push();
+            let setCategory = newCategory.set({
+                'icon': 'rocket',
+                'title': category.name,
+                'user': user
             });
+            arrayCategoryPromises.push(setCategory);
 
+            mappedCategories[category.name] = newCategory.getKey();
+        }
+    });
+
+    let allCategoryPromise = Promise.all(arrayCategoryPromises).then(_ => {
+        console.log('Categories!!!');
+        let promiseStatisticArray = [];
+        res.forEach(line => {
+            promiseStatisticArray.push(setStatistics(line));
+        })
+
+        Promise.all(promiseStatisticArray).then(_ => {
+            console.log('Statistic!!!');
+            let statsPromise = [];
+            res.forEach(line => {
+                statsPromise.push(setStats(line));
+            })
+            Promise.all(statsPromise).then(_ => {
+                console.log('Stats!!!');
+                let promiseStatisticCategoryArray = [];
+                res.forEach(line => {
+                    promiseStatisticCategoryArray.push(setCategoryStatistics(line));
+                })
+                Promise.all(promiseStatisticCategoryArray).then(_ => {
+                    console.log('Stat Category!!!');
+                    let promiseRecordsArray = [];
+                    res.forEach(line => {
+                        promiseRecordsArray.push(writeRecord(line));
+                    })
+                    Promise.all(promiseRecordsArray).then(_ => {
+                        console.log('Records Done !!!')
+                    })
+                })
+            });
         });
+
     });
 }
